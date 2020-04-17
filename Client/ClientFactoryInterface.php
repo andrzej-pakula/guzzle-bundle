@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Client;
 
-use GuzzleHttp\ClientInterface;
+use Andreo\GuzzleBundle\Client\Configurator\ConfiguratorInterface;
+use Andreo\GuzzleBundle\Configurator\ConfigBuilderInterface;
 
 interface ClientFactoryInterface
 {
-    public function create(ClientBuilderInterface $builder): ClientInterface;
+    public static function create(string $decoratorClass, ConfigBuilderInterface $builder, ConfiguratorInterface $configurator): ClientInterface;
 }

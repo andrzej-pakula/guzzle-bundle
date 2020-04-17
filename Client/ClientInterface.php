@@ -10,6 +10,13 @@ use Psr\Http\Message\ResponseInterface;
 
 interface ClientInterface
 {
-    public function post(string $url): void;
     public function get(string $url): ResponseInterface;
+
+    public function post(string $url): ResponseInterface;
+
+    public function path(string $url): ResponseInterface;
+
+    public function put(string $url): ResponseInterface;
+
+    public function delete(string $url): ResponseInterface;
 }

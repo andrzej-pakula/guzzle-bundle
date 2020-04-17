@@ -1,2 +1,16 @@
 services:
-  Andreo\GuzzleBundle\Client\ClientFactory:
+  Andreo\GuzzleBundle\Client\ClientFactoryInterface:
+    alias: Andreo\GuzzleBundle\Client\ClientFactory
+
+  Andreo\GuzzleBundle\Client\Configurator\Configurator:
+    shared: false
+
+  Andreo\GuzzleBundle\Client\Configurator\ConfiguratorInterface:
+    alias: Andreo\GuzzleBundle\Client\Configurator\Configurator
+
+  Andreo\GuzzleBundle\Middleware\MiddlewareStorage:
+    arguments:
+      - !tagged_iterator andreo.guzzle.middleware
+
+  Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface:
+    alias: Andreo\GuzzleBundle\Middleware\MiddlewareStorage

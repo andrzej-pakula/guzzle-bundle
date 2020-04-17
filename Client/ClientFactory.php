@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Client;
 
-use Andreo\GuzzleBundle\Client\Configurator\Configurator;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Client;
+use Andreo\GuzzleBundle\Client\Configurator\ConfiguratorInterface;
+use GuzzleHttp\Client as GuzzleClient;
+use Andreo\GuzzleBundle\Configurator\ConfigBuilderInterface;
 
-class ClientFactory implements ClientFactoryInterface
+final class ClientFactory implements ClientFactoryInterface
 {
-    public function create(ClientBuilderInterface $builder): ClientInterface
+    public static function create(string $decoratorClass, ConfigBuilderInterface $builder, ConfiguratorInterface $configurator): ClientInterface
     {
-        $configurator = $builder->build(new Configurator());
+        $configurator = $builder->build($configurator);
 
-        $decorator = $configurator->getDecorator();
-
-        return new $decorator(new Client($configurator->getConfig()));
+        return new $decoratorClass(
+            new GuzzleClient($configurator->getConfig())
+        );
     }
 }
