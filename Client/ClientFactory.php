@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Client;
 
-use Andreo\GuzzleBundle\Client\Configurator\ConfiguratorInterface;
+use Andreo\GuzzleBundle\Configurator\ConfiguratorInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use Andreo\GuzzleBundle\Configurator\ConfigBuilderInterface;
 

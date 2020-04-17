@@ -6,10 +6,10 @@ namespace Andreo\GuzzleBundle\DependencyInjection;
 
 use Andreo\GuzzleBundle\Client\Client;
 use Andreo\GuzzleBundle\Client\ClientFactoryInterface;
-use Andreo\GuzzleBundle\Client\Configurator\ConfiguratorFactoryInterface;
-use Andreo\GuzzleBundle\Client\Configurator\ConfiguratorInterface;
-use Andreo\GuzzleBundle\Client\Configurator\DelegatingConfigBuilder;
-use Andreo\GuzzleBundle\Client\Configurator\DelegatingConfigBuilderInterface;
+use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryInterface;
+use Andreo\GuzzleBundle\Configurator\ConfiguratorInterface;
+use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilder;
+use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilderInterface;
 use Andreo\GuzzleBundle\Configurator\ConfigBuilder;
 use Andreo\GuzzleBundle\Configurator\ConfigBuilderInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
-use Andreo\GuzzleBundle\Client\Configurator\ConfiguratorFactoryFactory;
+use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryFactory;
 
 
 class AndreoGuzzleExtension extends Extension

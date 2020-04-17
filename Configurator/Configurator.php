@@ -3,22 +3,18 @@
 declare(strict_types=1);
 
 
-namespace Andreo\GuzzleBundle\Client\Configurator;
+namespace Andreo\GuzzleBundle\Configurator;
 
-use Andreo\GuzzleBundle\Client\ClientInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use GuzzleHttp\HandlerStack;
 
 final class Configurator implements ConfiguratorInterface
 {
-    public ?string $baseURI;
+    public string $baseURI;
 
     public ?string $timeout;
 
     public ?bool $allowRedirects;
-
-    /** @var string&ClientInterface */
-    public ?string $decoratorClass;
 
     private HandlerStack $handlerStack;
 
@@ -33,14 +29,6 @@ final class Configurator implements ConfiguratorInterface
     public function addMiddleware(MiddlewareInterface $middleware): void
     {
         $middleware->apply($this->handlerStack);
-    }
-
-    /**
-     * @return string&ClientInterface
-     */
-    public function getDecoratorClass(): ?string
-    {
-        return $this->decoratorClass;
     }
 
     public function getConfig(): array

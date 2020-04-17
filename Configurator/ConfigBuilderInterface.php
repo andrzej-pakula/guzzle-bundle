@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Configurator;
 
-use Andreo\GuzzleBundle\Client\Configurator\ConfiguratorInterface;
+use Andreo\GuzzleBundle\Configurator\ConfiguratorInterface;
 
 interface ConfigBuilderInterface
 {

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Andreo\GuzzleBundle\Client\Configurator;
+namespace Andreo\GuzzleBundle\Configurator;
 
 
 final class DelegatingConfigBuilder implements DelegatingConfigBuilderInterface
@@ -26,7 +26,6 @@ final class DelegatingConfigBuilder implements DelegatingConfigBuilderInterface
     {
         $configurator->baseURI = $this->config['base_uri'];
         $configurator->timeout = $this->config['timeout'];
-        $configurator->decoratorClass = $this->config['decorator_id'];
 
         return $configurator;
     }
