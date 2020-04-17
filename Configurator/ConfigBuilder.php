@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Configurator;
 
-use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilderInterface;
-use Andreo\GuzzleBundle\Configurator\ConfiguratorInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface;
 
