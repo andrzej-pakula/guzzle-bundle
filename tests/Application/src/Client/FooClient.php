@@ -21,6 +21,11 @@ class FooClient implements ClientInterface
         $this->decorated = $decorated;
     }
 
+    public function getTodo()
+    {
+        return $this->get('/todos/1');
+    }
+
     public function get(string $url): ResponseInterface
     {
         return $this->decorated->get($url);

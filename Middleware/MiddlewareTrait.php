@@ -7,9 +7,10 @@ namespace Andreo\GuzzleBundle\Middleware;
 
 trait MiddlewareTrait
 {
-    private MiddlewareHandler $nextHandler;
+    /** @var callable */
+    private $nextHandler;
 
-    public function withNextHandler(MiddlewareHandler $handler): MiddlewareInterface
+    public function withNextHandler(callable $handler): MiddlewareInterface
     {
         /** @var MiddlewareInterface&MiddlewareTrait $this */
         $new = clone $this;
@@ -18,7 +19,7 @@ trait MiddlewareTrait
         return $new;
     }
 
-    public function getNextHandler(): MiddlewareHandler
+    public function getNextHandler(): callable
     {
         return $this->nextHandler;
     }

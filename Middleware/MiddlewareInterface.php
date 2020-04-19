@@ -7,10 +7,11 @@ namespace Andreo\GuzzleBundle\Middleware;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\RequestInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 
 interface MiddlewareInterface
 {
-    public function __invoke(RequestInterface $request, array $options): void;
+    public function __invoke(RequestInterface $request, array $options): PromiseInterface;
 
     public function apply(HandlerStack $stack): void;
 
@@ -19,7 +20,7 @@ interface MiddlewareInterface
      */
     public function getClientName(): ?string;
 
-    public function getNextHandler(): MiddlewareHandler;
+    public function getNextHandler(): callable;
 
-    public function withNextHandler(MiddlewareHandler $handler): MiddlewareInterface;
+    public function withNextHandler(callable $handler): MiddlewareInterface;
 }

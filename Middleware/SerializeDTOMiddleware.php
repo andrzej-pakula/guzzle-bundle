@@ -7,14 +7,17 @@ namespace Andreo\GuzzleBundle\Middleware;
 
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\RequestInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 
 final class SerializeDTOMiddleware implements MiddlewareInterface
 {
     use MiddlewareTrait;
 
-    public function __invoke(RequestInterface $request, array $options): void
+    public function __invoke(RequestInterface $request, array $options): PromiseInterface
     {
         $nextHandler = $this->getNextHandler();
+
+        return $nextHandler($request, $options);
     }
 
     public function apply(HandlerStack $stack): void

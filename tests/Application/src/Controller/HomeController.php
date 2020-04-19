@@ -8,6 +8,7 @@ namespace Tests\Andreo\GuzzleBundle\App\Controller;
 
 use Andreo\GuzzleBundle\Client\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Tests\Andreo\GuzzleBundle\App\Client\FooClient;
 
@@ -25,9 +26,10 @@ class HomeController extends AbstractController
     /**
      * @Route("/home")
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        dump($this->fooClient);
-        dump($this->barClient); die;
+        $response = $this->fooClient->getTodo();
+
+        dump((string)$response->getBody()); die;
     }
 }

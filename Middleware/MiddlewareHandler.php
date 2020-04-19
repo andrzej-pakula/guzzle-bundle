@@ -14,7 +14,7 @@ final class MiddlewareHandler
         $this->middleware = $middleware;
     }
 
-    public function __invoke(MiddlewareHandler $nextHandler): MiddlewareInterface
+    public function __invoke(callable $nextHandler): MiddlewareInterface
     {
         return $this->middleware->withNextHandler($nextHandler);
     }
