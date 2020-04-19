@@ -19,9 +19,12 @@ final class MiddlewareStorage implements MiddlewareStorageInterface
         $this->setCreatedHandlers($middlewares);
     }
 
+    /**
+     * @return iterable<MiddlewareHandler>
+     */
     public function get(string $clientName): iterable
     {
-        return $this->middlewares[$clientName] ?? [];
+        return array_merge($this->middlewares[$clientName] ?? [], $this->middlewares['default'] ?? []);
     }
 
     /**
@@ -31,7 +34,7 @@ final class MiddlewareStorage implements MiddlewareStorageInterface
     {
         /** @var MiddlewareInterface $middleware */
         foreach ($middlewares as $middleware) {
-            $this->middlewares[$middleware->getClientName()][] = new MiddlewareHandler($middleware);
+            $this->middlewares[$middleware->getClientName() ?? 'default'][] = new MiddlewareHandler($middleware);
         }
     }
 }

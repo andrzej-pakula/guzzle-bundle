@@ -26,5 +26,4 @@ final class SerializeDTOMiddleware implements MiddlewareInterface
     {
         return null;
     }
-
 }
