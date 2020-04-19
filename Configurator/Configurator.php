@@ -12,9 +12,9 @@ final class Configurator implements ConfiguratorInterface
 {
     public string $baseURI;
 
-    public ?string $timeout;
+    public ?string $timeout = null;
 
-    public ?bool $allowRedirects;
+    public ?bool $allowRedirects = null;
 
     private HandlerStack $handlerStack;
 
@@ -34,7 +34,7 @@ final class Configurator implements ConfiguratorInterface
     public function getConfig(): array
     {
         $options['base_uri'] = $this->baseURI;
-        $options['timeout'] = 10;
+        $options['timeout'] = $this->timeout;
         $options['allow_redirects'] = $this->allowRedirects;
         $options['handler'] = $this->handlerStack;
 

@@ -32,9 +32,9 @@ final class Configuration implements ConfigurationInterface
             ->arrayPrototype()
                 ->children()
                     ->scalarNode('base_uri')->isRequired()->end()
-                    ->scalarNode('timeout')->end()
-                    ->scalarNode('connect_timeout')->end()
-                    ->scalarNode('decorator_id')->end()
+                    ->scalarNode('timeout')->defaultNull()->end()
+                    ->scalarNode('connect_timeout')->defaultNull()->end()
+                    ->scalarNode('decorator_id')->defaultNull()->end()
                 ->end()
             ->end();
 

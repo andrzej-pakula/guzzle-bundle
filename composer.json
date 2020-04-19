@@ -53,7 +53,10 @@
         "symfony/test-pack": "*"
     },
     "autoload": {
-        "psr-4": { "Andreo\\GuzzleBundle\\": "" }
+        "psr-4": {
+            "Andreo\\GuzzleBundle\\": "",
+            "Tests\\Andreo\\GuzzleBundle\\App\\": "tests/Application/src/"
+        }
     },
     "autoload-dev": {
         "classmap": ["tests/Application/src/Kernel.php"]

@@ -19,7 +19,7 @@ final class SerializeDTOMiddleware implements MiddlewareInterface
 
     public function apply(HandlerStack $stack): void
     {
-        $stack->push($this, self::class);
+        $stack->push(new MiddlewareHandler($this), self::class);
     }
 
     public function getClientName(): ?string

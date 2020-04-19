@@ -34,7 +34,7 @@ final class MiddlewareStorage implements MiddlewareStorageInterface
     {
         /** @var MiddlewareInterface $middleware */
         foreach ($middlewares as $middleware) {
-            $this->middlewares[$middleware->getClientName() ?? 'default'][] = new MiddlewareHandler($middleware);
+            $this->middlewares[$middleware->getClientName() ?? 'default'][] = $middleware;
         }
     }
 }

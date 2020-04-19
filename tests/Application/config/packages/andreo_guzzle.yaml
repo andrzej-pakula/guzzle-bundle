@@ -1,0 +1,7 @@
+andreo_guzzle:
+  clients:
+    foo:
+      base_uri: 'https://foo.com'
+      decorator_id: Tests\Andreo\GuzzleBundle\App\Client\FooClient
+    bar:
+      base_uri: 'https://bar.com'

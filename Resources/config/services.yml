@@ -1,4 +1,6 @@
 services:
+  Andreo\GuzzleBundle\Client\ClientFactory:
+
   Andreo\GuzzleBundle\Client\ClientFactoryInterface:
     alias: Andreo\GuzzleBundle\Client\ClientFactory
 
@@ -14,3 +16,6 @@ services:
 
   Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface:
     alias: Andreo\GuzzleBundle\Middleware\MiddlewareStorage
+
+  Andreo\GuzzleBundle\Middleware\SerializeDTOMiddleware:
+    tags: [andreo.guzzle.middleware]

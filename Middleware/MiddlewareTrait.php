@@ -18,7 +18,7 @@ trait MiddlewareTrait
         return $new;
     }
 
-    private function getNextHandler(): MiddlewareHandler
+    public function getNextHandler(): MiddlewareHandler
     {
         return $this->nextHandler;
     }

@@ -9,9 +9,7 @@ use Andreo\GuzzleBundle\Client\ClientFactoryInterface;
 use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryInterface;
 use Andreo\GuzzleBundle\Configurator\ConfiguratorInterface;
 use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilder;
-use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilderInterface;
 use Andreo\GuzzleBundle\Configurator\ConfigBuilder;
-use Andreo\GuzzleBundle\Configurator\ConfigBuilderInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -41,20 +39,15 @@ class AndreoGuzzleExtension extends Extension
     {
         /** @var array<string, mixed> $clientConfig */
         foreach ($clients as $clientName => $clientConfig) {
-
             $delegatingConfigBuilderDef = (new Definition(DelegatingConfigBuilder::class))
                 ->setPrivate(true)
                 ->addArgument($clientConfig);
-
-            $container->setDefinition(DelegatingConfigBuilderInterface::class . '.' . $clientName, $delegatingConfigBuilderDef);
 
             $configBuilderDef = (new Definition(ConfigBuilder::class))
                 ->setPrivate(true)
                 ->addArgument($clientName)
                 ->addArgument($delegatingConfigBuilderDef)
                 ->addArgument(new Reference(MiddlewareStorageInterface::class));
-
-            $container->setDefinition(ConfigBuilderInterface::class . '.' . $clientName, $configBuilderDef);
 
             $clientDef = (new Definition(Client::class))
                 ->setPrivate(true)
@@ -65,16 +58,14 @@ class AndreoGuzzleExtension extends Extension
 
             $clientId = 'andreo.guzzle_client.' . $clientName;
 
+            if (null !== $clientConfig['decorator_id'] && !$container->has($clientConfig['decorator_id'])) {
+                $clientDef->addTag('andreo.guzzle_decorated_client', [
+                    'decorator_id' => $clientConfig['decorator_id']
+                ]);
+            }
+
             $container->setDefinition($clientId, $clientDef);
 
-            if (null !== $clientConfig['decorator_id'] && !$container->has($clientConfig['decorator_id'])) {
-                $clientDecoratorDef = (new Definition(Client::class))
-                    ->setPrivate(true)
-                    ->setDecoratedService($clientId)
-                    ->addArgument($clientConfig['decorator_id'] . '.inner');
-
-                $container->setDefinition($clientConfig['decorator_id'], $clientDecoratorDef);
-            }
         }
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-use App\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
+use Tests\Andreo\GuzzleBundle\App\Kernel;
 
 require dirname(__DIR__).'/config/bootstrap.php';
 
