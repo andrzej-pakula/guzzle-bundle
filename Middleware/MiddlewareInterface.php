@@ -6,11 +6,15 @@ namespace Andreo\GuzzleBundle\Middleware;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
+use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 
 interface MiddlewareInterface
 {
+    /**
+     * @param RequestInterface&MessageInterface $request
+     */
     public function __invoke(RequestInterface $request, array $options): PromiseInterface;
 
     public function apply(HandlerStack $stack): void;

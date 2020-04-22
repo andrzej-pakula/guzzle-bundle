@@ -18,4 +18,6 @@ services:
     alias: Andreo\GuzzleBundle\Middleware\MiddlewareStorage
 
   Andreo\GuzzleBundle\Middleware\SerializeDTOMiddleware:
+    arguments:
+      - '@serializer'
     tags: [andreo.guzzle.middleware]

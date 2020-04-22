@@ -18,6 +18,9 @@ final class Configurator implements ConfiguratorInterface
 
     private HandlerStack $handlerStack;
 
+    /** @var callable */
+    private $handler;
+
     /**
      * @param iterable<MiddlewareInterface> $middlewares
      */
@@ -36,7 +39,7 @@ final class Configurator implements ConfiguratorInterface
         $options['base_uri'] = $this->baseURI;
         $options['timeout'] = $this->timeout;
         $options['allow_redirects'] = $this->allowRedirects;
-        $options['handler'] = $this->handlerStack;
+        $options['handler'] = $this->handler;
 
         return array_filter($options);
     }

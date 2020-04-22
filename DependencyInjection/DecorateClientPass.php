@@ -30,15 +30,18 @@ class DecorateClientPass implements CompilerPassInterface
          * @var array<array<string, mixed>> $tagAttributes
          */
         foreach ($decoratedClients as $clientId => $tagAttributes) {
+            $clientDef = $container->getDefinition($clientId);
+
             foreach ($tagAttributes as $attributes) {
                 if ($container->hasDefinition($attributes['decorator_id'])) {
                     $clientDecoratorDef = $container->getDefinition($attributes['decorator_id']);
                 } else {
                     $clientDecoratorDef = (new Definition($attributes['decorator_id']));
                 }
-
+                
                 $clientDecoratorDef
                     ->setPrivate(true)
+                    ->setLazy($clientDef->isLazy())
                     ->setDecoratedService($clientId, $attributes['decorator_id'] . '.inner')
                     ->addArgument(new Reference($attributes['decorator_id'] . '.inner'));
 

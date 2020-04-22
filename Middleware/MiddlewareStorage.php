@@ -8,7 +8,7 @@ namespace Andreo\GuzzleBundle\Middleware;
 
 final class MiddlewareStorage implements MiddlewareStorageInterface
 {
-    /** @var array<string, MiddlewareHandler>  */
+    /** @var array<string, MiddlewareInterface>  */
     private array $middlewares;
 
     /**
@@ -16,11 +16,11 @@ final class MiddlewareStorage implements MiddlewareStorageInterface
      */
     public function __construct(iterable $middlewares)
     {
-        $this->setCreatedHandlers($middlewares);
+        $this->setMiddlewares($middlewares);
     }
 
     /**
-     * @return iterable<MiddlewareHandler>
+     * @return iterable<MiddlewareInterface>
      */
     public function get(string $clientName): iterable
     {
@@ -30,7 +30,7 @@ final class MiddlewareStorage implements MiddlewareStorageInterface
     /**
      * @param iterable<MiddlewareInterface> $middlewares
      */
-    private function setCreatedHandlers(iterable $middlewares): void
+    private function setMiddlewares(iterable $middlewares): void
     {
         /** @var MiddlewareInterface $middleware */
         foreach ($middlewares as $middleware) {

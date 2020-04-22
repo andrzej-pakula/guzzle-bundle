@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\DependencyInjection;
 
 use Andreo\OAuthApiConnectorBundle\Security\ApiConnector;
+use GuzzleHttp\RequestOptions;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -32,9 +33,10 @@ final class Configuration implements ConfigurationInterface
             ->arrayPrototype()
                 ->children()
                     ->scalarNode('base_uri')->isRequired()->end()
-                    ->scalarNode('timeout')->defaultNull()->end()
-                    ->scalarNode('connect_timeout')->defaultNull()->end()
+                    ->scalarNode(RequestOptions::TIMEOUT)->defaultNull()->end()
+                    ->scalarNode(RequestOptions::CONNECT_TIMEOUT)->defaultNull()->end()
                     ->scalarNode('decorator_id')->defaultNull()->end()
+                    ->scalarNode('lazy')->defaultFalse()->end()
                 ->end()
             ->end();
 
