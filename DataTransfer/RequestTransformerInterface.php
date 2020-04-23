@@ -10,7 +10,9 @@ use Psr\Http\Message\RequestInterface;
 
 interface RequestTransformerInterface
 {
-    public function withBody(RequestInterface $request, DTOInterface $data): RequestInterface;
+    public function withBody(DataMapperInterface $dataMapper, DTOInterface $data): self;
 
-    public function withQuery(RequestInterface $request, DTOInterface $data): RequestInterface;
+    public function withQuery(DataMapperInterface $dataMapper, DTOInterface $data): self;
+
+    public function getRequest(): RequestInterface;
 }

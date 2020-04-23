@@ -6,8 +6,9 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Middleware;
 
 use Andreo\GuzzleBundle\Client\RequestOptions;
+use Andreo\GuzzleBundle\DataTransfer\DataMapperInterface;
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
-use Andreo\GuzzleBundle\DataTransfer\ResponseTransformerInterface;
+use Andreo\GuzzleBundle\DataTransfer\ResponseTransformer;
 use Andreo\GuzzleBundle\Request\Response;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\MessageInterface;
@@ -15,15 +16,15 @@ use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class ReverseTransferMiddleware implements MiddlewareInterface
+final class ReverseTransferDTOMiddleware implements MiddlewareInterface
 {
     use MiddlewareTrait;
 
-    private ResponseTransformerInterface $responseTransformer;
+    private DataMapperInterface $dataMapper;
 
-    public function __construct(ResponseTransformerInterface $responseTransformer)
+    public function __construct(DataMapperInterface $dataMapper)
     {
-        $this->responseTransformer = $responseTransformer;
+        $this->dataMapper = $dataMapper;
     }
 
     /**
@@ -35,12 +36,16 @@ final class ReverseTransferMiddleware implements MiddlewareInterface
 
         return $nextHandler($request, $options)->then(
             function (ResponseInterface $response) use ($request, $options) {
-                /** @var DTOInterface $dto */
-                $dto = $options[RequestOptions::DTO];
-
                 $responseDecorator = new Response($response);
+                /** @var DTOInterface|null $dto */
+                $dto = $options[RequestOptions::DTO];
+                if (null === $dto) {
+                    return $response;
+                }
 
-                return $dto->reverseTransfer($responseDecorator, $this->responseTransformer);
+                $transformer = $dto->reverseTransfer($this->dataMapper, new ResponseTransformer($responseDecorator));
+
+                return $transformer->getResponse();
             }
         );
     }

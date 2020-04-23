@@ -5,27 +5,37 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\DataTransfer;
 
-
 use Andreo\GuzzleBundle\Request\Response;
 use Psr\Http\Message\ResponseInterface;
 
 final class ResponseTransformer implements ResponseTransformerInterface
 {
-    private DataMapperInterface $dataMapper;
-
-    public function __construct(DataMapperInterface $dataMapper)
-    {
-        $this->dataMapper = $dataMapper;
-    }
+    /**
+     * @var Response&ResponseInterface
+     */
+    private Response $response;
 
     /**
      * @param Response&ResponseInterface $response
      */
-    public function withDTO(ResponseInterface $response, DTOInterface $data): ResponseInterface
+    public function __construct(Response $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
+     * @return Response&ResponseInterface
+     */
+    public function withDTO(DataMapperInterface $dataMapper, DTOInterface $data): ResponseTransformerInterface
     {
         /** @var DTOInterface $dto */
-        $dto = $this->dataMapper->deserialize($response->getBody()->getContents(), $data);
+        $dto = $dataMapper->deserialize($this->response->getBody()->getContents(), $data);
 
-        return $response->withDTO($dto);
+        return new self($this->response->withDTO($dto));
+    }
+
+    public function getResponse(): Response
+    {
+        return $this->response;
     }
 }

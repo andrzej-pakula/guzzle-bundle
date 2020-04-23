@@ -10,5 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 interface ResponseTransformerInterface
 {
-    public function withDTO(ResponseInterface $response, DTOInterface $data): ResponseInterface;
+    public function withDTO(DataMapperInterface $dataMapper, DTOInterface $data): self;
+
+    public function getResponse(): ResponseInterface;
 }

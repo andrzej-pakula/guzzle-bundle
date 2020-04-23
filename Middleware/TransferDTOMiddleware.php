@@ -6,23 +6,24 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Middleware;
 
 use Andreo\GuzzleBundle\Client\RequestOptions;
+use Andreo\GuzzleBundle\DataTransfer\DataMapperInterface;
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
-use Andreo\GuzzleBundle\DataTransfer\RequestTransformerInterface;
+use Andreo\GuzzleBundle\DataTransfer\RequestTransformer;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 
-final class TransferDataMiddleware implements MiddlewareInterface
+final class TransferDTOMiddleware implements MiddlewareInterface
 {
     use MiddlewareTrait;
 
-    private RequestTransformerInterface $requestTransformer;
+    private DataMapperInterface $dataMapper;
 
-    public function __construct(RequestTransformerInterface $requestTransformer)
+    public function __construct(DataMapperInterface $dataMapper)
     {
-        $this->requestTransformer = $requestTransformer;
+        $this->dataMapper = $dataMapper;
     }
 
     /**
@@ -32,11 +33,14 @@ final class TransferDataMiddleware implements MiddlewareInterface
     {
         $nextHandler = $this->getNextHandler();
 
-        /** @var DTOInterface $dto */
-        $dto = $options[RequestOptions::DTO];
+        /** @var DTOInterface|null $dto */
+        $dto = $options[RequestOptions::DTO] ??= null;
 
-        $request = $dto->transfer($request, $this->requestTransformer);
-        
+        if (null !== $dto) {
+            $transformer = $dto->transfer($this->dataMapper, new RequestTransformer($request));
+            $request = $transformer->getRequest();
+        }
+
         return $nextHandler($request, $options);
     }
 

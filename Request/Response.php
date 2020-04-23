@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Request;
 
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
-use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class Response implements ResponseInterface
 {
     use ResponseDecoratorTrait;
 
-    private DTOInterface $dto;
+    private ?DTOInterface $dto;
 
-    public function withDTO(DTOInterface $dto): MessageInterface
+    public function withDTO(DTOInterface $dto): ResponseInterface
     {
         if ($dto === $this->dto) {
             return $this;
@@ -24,5 +23,10 @@ final class Response implements ResponseInterface
         $new->dto = $dto;
 
         return $new;
+    }
+
+    public function getDTO(): ?DTOInterface
+    {
+        return $this->dto;
     }
 }
