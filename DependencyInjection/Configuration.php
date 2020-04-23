@@ -33,10 +33,16 @@ final class Configuration implements ConfigurationInterface
             ->arrayPrototype()
                 ->children()
                     ->scalarNode('base_uri')->isRequired()->end()
-                    ->scalarNode(RequestOptions::TIMEOUT)->defaultNull()->end()
-                    ->scalarNode(RequestOptions::CONNECT_TIMEOUT)->defaultNull()->end()
                     ->scalarNode('decorator_id')->defaultNull()->end()
                     ->scalarNode('lazy')->defaultFalse()->end()
+                    ->arrayNode('options')
+                        ->arrayPrototype()
+                            ->children()
+                                ->scalarNode(RequestOptions::TIMEOUT)->defaultNull()->end()
+                                ->scalarNode(RequestOptions::CONNECT_TIMEOUT)->defaultNull()->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
 
