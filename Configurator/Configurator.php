@@ -10,16 +10,10 @@ use GuzzleHttp\HandlerStack;
 
 final class Configurator implements ConfiguratorInterface
 {
-    public string $baseURI;
-
-    public ?string $timeout = null;
-
-    public ?bool $allowRedirects = null;
-
     private HandlerStack $handlerStack;
 
-    /** @var callable */
-    private $handler;
+    /** @var array<string, mixed> */
+    public array $config;
 
     /**
      * @param iterable<MiddlewareInterface> $middlewares
@@ -34,13 +28,11 @@ final class Configurator implements ConfiguratorInterface
         $middleware->apply($this->handlerStack);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getConfig(): array
     {
-        $options['base_uri'] = $this->baseURI;
-        $options['timeout'] = $this->timeout;
-        $options['allow_redirects'] = $this->allowRedirects;
-        $options['handler'] = $this->handler;
-
-        return array_filter($options);
+        return array_filter($this->config);
     }
 }

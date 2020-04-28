@@ -3,5 +3,6 @@ andreo_guzzle:
     foo:
       base_uri: 'https://jsonplaceholder.typicode.com'
       decorator_id: Tests\Andreo\GuzzleBundle\App\Client\FooClient
+      options: []
     bar:
       base_uri: 'https://bar.com'

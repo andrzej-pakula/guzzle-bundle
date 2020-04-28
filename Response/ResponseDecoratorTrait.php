@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Andreo\GuzzleBundle\Request;
+namespace Andreo\GuzzleBundle\Response;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;

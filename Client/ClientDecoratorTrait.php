@@ -5,28 +5,31 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Client;
 
-use Andreo\GuzzleBundle\Request\RequestFactory;
-use Andreo\GuzzleBundle\Request\Response;
-use GuzzleHttp\Client as GuzzleClient;
+use Andreo\GuzzleBundle\Response\RequestFactory;
+use Andreo\GuzzleBundle\Response\Response;
+use GuzzleHttp\ClientInterface as BaseClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 trait ClientDecoratorTrait
 {
-    private GuzzleClient $decorated;
+    /**
+     * @var BaseClientInterface
+     */
+    private BaseClientInterface $decorated;
 
-    public function __construct(GuzzleClient $decorated)
+    public function __construct(BaseClientInterface $decorated)
     {
         $this->decorated = $decorated;
     }
 
-    public function get(string $url, array $options = []): Response
+    public function get(string $url, array $options = []): ResponseInterface
     {
         return $this->request(RequestMethods::METHOD_GET, $url, $options);
     }
 
-    public function post(string $url, array $options = []): Response
+    public function post(string $url, array $options = []): ResponseInterface
     {
         return $this->request(RequestMethods::METHOD_POST, $url, $options);
     }

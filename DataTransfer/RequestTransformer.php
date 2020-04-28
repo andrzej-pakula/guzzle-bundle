@@ -28,8 +28,9 @@ final class RequestTransformer implements RequestTransformerInterface
     public function withQuery(DataMapperInterface $dataMapper, DTOInterface $data): RequestTransformerInterface
     {
         $query = http_build_query($dataMapper->normalize($data));
+        $uri = $this->request->getUri()->withQuery($query);
 
-        return new self($this->request->withUri($this->request->getUri()->withQuery($query)));
+        return new self($this->request->withUri($uri));
     }
 
     public function getRequest(): RequestInterface

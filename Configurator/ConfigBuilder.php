@@ -2,40 +2,53 @@
 
 declare(strict_types=1);
 
+
 namespace Andreo\GuzzleBundle\Configurator;
+
 
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface;
 
 final class ConfigBuilder implements ConfigBuilderInterface
 {
-    private DelegatingConfigBuilderInterface $delegatingConfigBuilder;
     private MiddlewareStorageInterface $middlewareStorage;
-    private string $clientName;
+
+    /** @var Configurator&ConfiguratorInterface  */
+    private ConfiguratorInterface $configurator;
+
+    private ConfigProviderInterface $configProvider;
+
+    /** @var array<string, mixed> */
+    private array $config;
 
     public function __construct(
-        string $clientName,
-        DelegatingConfigBuilderInterface $delegatingConfigBuilder,
-        MiddlewareStorageInterface $middlewareStorage
+        MiddlewareStorageInterface $middlewareStorage,
+        ConfiguratorInterface $configurator,
+        ConfigProviderInterface $configProvider,
+        array $config
     ){
-        $this->clientName = $clientName;
-        $this->delegatingConfigBuilder = $delegatingConfigBuilder;
         $this->middlewareStorage = $middlewareStorage;
+        $this->configurator = $configurator;
+        $this->configProvider = $configProvider;
+        $this->config = $config;
     }
 
-    public function build(ConfiguratorInterface $configurator): ConfiguratorInterface
+    public function build(): ConfiguratorInterface
     {
-        $this->setMiddlewares($configurator, $this->clientName);
+        $middlewares = $this->middlewareStorage->get($this->config['name']);
 
-        return $this->delegatingConfigBuilder->build($configurator);
-    }
-
-    private function setMiddlewares(ConfiguratorInterface $configurator, string $clientName): void
-    {
-        $middlewares = $this->middlewareStorage->get($clientName);
         /** @var MiddlewareInterface $middleware */
-        foreach ($middlewares  as $middleware) {
-            $configurator->addMiddleware($middleware);
+        foreach ($middlewares as $middleware) {
+            $this->configurator->addMiddleware($middleware);
         }
+
+        $this->configurator->config['base_uri'] = $this->config['base_uri'];
+        $this->configurator->config = $this->config['options'];
+
+        $config = array_replace_recursive($this->configurator->config, $this->configProvider->getConfig());
+
+        $this->configurator->config = $config;
+
+        return $this->configurator;
     }
 }

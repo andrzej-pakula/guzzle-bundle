@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Andreo\GuzzleBundle\Request;
+namespace Andreo\GuzzleBundle\Response;
 
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
 use Psr\Http\Message\ResponseInterface;

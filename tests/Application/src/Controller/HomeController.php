@@ -28,7 +28,7 @@ class HomeController extends AbstractController
      */
     public function index(FooClient $fooClient): JsonResponse
     {
-        $response = $fooClient->postTodo();
+        $response = $fooClient->getFoo();
 
         dump((string)$response->getBody()); die;
     }

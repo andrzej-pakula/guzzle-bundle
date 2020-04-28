@@ -6,5 +6,5 @@ namespace Andreo\GuzzleBundle\Configurator;
 
 interface ConfigBuilderInterface
 {
-    public function build(ConfiguratorInterface $configurator): ConfiguratorInterface;
+    public function build(): ConfiguratorInterface;
 }

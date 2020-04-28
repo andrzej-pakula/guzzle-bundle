@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Middleware;
 
+use Generator;
 
 final class MiddlewareStorage implements MiddlewareStorageInterface
 {
@@ -22,9 +23,9 @@ final class MiddlewareStorage implements MiddlewareStorageInterface
     /**
      * @return iterable<MiddlewareInterface>
      */
-    public function get(string $clientName): iterable
+    public function get(string $clientName): Generator
     {
-        return array_merge($this->middlewares[$clientName] ?? [], $this->middlewares['default'] ?? []);
+        yield from array_merge($this->middlewares[$clientName] ?? [], $this->middlewares['default'] ?? []);
     }
 
     /**

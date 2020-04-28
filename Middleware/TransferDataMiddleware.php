@@ -15,9 +15,9 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 
-final class TransferDTOMiddleware implements MiddlewareInterface
+final class TransferDataMiddleware implements InvokableMiddlewareInterface
 {
-    use MiddlewareTrait;
+    use InvokableMiddlewareTrait;
 
     private DataMapperInterface $dataMapper;
 
@@ -46,7 +46,7 @@ final class TransferDTOMiddleware implements MiddlewareInterface
 
     public function apply(HandlerStack $stack): void
     {
-        $stack->before('prepare_body', new MiddlewareHandler($this), self::class);
+        $stack->before('prepare_body', new InvokableMiddlewareHandler($this), self::class);
     }
 
     public function getClientName(): ?string

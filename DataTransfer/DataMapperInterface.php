@@ -6,9 +6,9 @@ namespace Andreo\GuzzleBundle\DataTransfer;
 
 interface DataMapperInterface
 {
-    public function normalize(DTOInterface $data): array;
+    public function normalize(DTOInterface $data, array $options = []): array;
 
-    public function serialize(DTOInterface $data): string;
+    public function serialize(DTOInterface $data, array $options = []): string;
 
-    public function deserialize(string $content, DTOInterface $data): string;
+    public function deserialize(string $content, DTOInterface $data, array $options = []): DTOInterface;
 }

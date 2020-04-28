@@ -5,14 +5,14 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Middleware;
 
-trait MiddlewareTrait
+trait InvokableMiddlewareTrait
 {
     /** @var callable */
     private $nextHandler;
 
-    public function withNextHandler(callable $handler): MiddlewareInterface
+    public function withNextHandler(callable $handler): InvokableMiddlewareInterface
     {
-        /** @var MiddlewareInterface&MiddlewareTrait $this */
+        /** @var InvokableMiddlewareInterface&InvokableMiddlewareTrait $this */
         $new = clone $this;
         $new->nextHandler = $handler;
 

@@ -1,8 +1,13 @@
 services:
+
+### Client ###
+
   Andreo\GuzzleBundle\Client\ClientFactory:
 
   Andreo\GuzzleBundle\Client\ClientFactoryInterface:
     alias: Andreo\GuzzleBundle\Client\ClientFactory
+
+### Configurator ###
 
   Andreo\GuzzleBundle\Configurator\Configurator:
     shared: false
@@ -10,14 +15,17 @@ services:
   Andreo\GuzzleBundle\Configurator\ConfiguratorInterface:
     alias: Andreo\GuzzleBundle\Configurator\Configurator
 
+  Andreo\GuzzleBundle\Configurator\NullConfigProvider:
+
+  Andreo\GuzzleBundle\Configurator\ConfigProviderInterface:
+    alias: Andreo\GuzzleBundle\Configurator\NullConfigProvider
+
+
+### Middleware ###
+
   Andreo\GuzzleBundle\Middleware\MiddlewareStorage:
     arguments:
       - !tagged_iterator andreo.guzzle.middleware
 
   Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface:
     alias: Andreo\GuzzleBundle\Middleware\MiddlewareStorage
-
-  Andreo\GuzzleBundle\Middleware\SerializeDTOMiddleware:
-    arguments:
-      - '@serializer'
-    tags: [andreo.guzzle.middleware]

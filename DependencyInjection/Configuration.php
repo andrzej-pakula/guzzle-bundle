@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\DependencyInjection;
 
+use Andreo\GuzzleBundle\Configurator\ConfigProviderInterface;
 use Andreo\OAuthApiConnectorBundle\Security\ApiConnector;
 use GuzzleHttp\RequestOptions;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -35,6 +36,13 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('base_uri')->isRequired()->end()
                     ->scalarNode('decorator_id')->defaultNull()->end()
                     ->scalarNode('lazy')->defaultFalse()->end()
+                    ->scalarNode('config_provider_id')->defaultValue(ConfigProviderInterface::class)->end()
+                    ->arrayNode('data_transfer')
+                        ->canBeDisabled()
+                        ->children()
+                            ->scalarNode('format')->defaultValue('json')
+                        ->end()
+                    ->end()
                     ->arrayNode('options')
                         ->children()
                             ->scalarNode(RequestOptions::TIMEOUT)->defaultNull()->end()
