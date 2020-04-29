@@ -11,17 +11,37 @@ services:
 
   Andreo\GuzzleBundle\Configurator\Configurator:
     shared: false
-    arguments:
-      - !tagged_iterator andreo.guzzle.delegating_configurator
 
   Andreo\GuzzleBundle\Configurator\ConfiguratorInterface:
     alias: Andreo\GuzzleBundle\Configurator\Configurator
 
+### DataTransfer ###
+
+  andreo.guzzle.json_data_mapper:
+    class: Andreo\GuzzleBundle\DataTransfer\DataMapper
+    lazy: true
+    tags: [andreo.guzzle.data_mapper]
+    arguments:
+      - '@Symfony\Component\Messenger\Transport\Serialization\SerializerInterface'
+      - 'json'
+
+  andreo.guzzle.xml_data_mapper:
+    class: Andreo\GuzzleBundle\DataTransfer\DataMapper
+    lazy: true
+    tags: [andreo.guzzle.data_mapper]
+    arguments:
+      - '@Symfony\Component\Messenger\Transport\Serialization\SerializerInterface'
+      - 'xml'
+
+  Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry:
+    arguments:
+      - !tagged_iterator andreo.guzzle.data_mapper
+
   ### Middleware ###
 
-  Andreo\GuzzleBundle\Middleware\MiddlewareStorage:
+  Andreo\GuzzleBundle\Middleware\MiddlewareRegistry:
     arguments:
       - !tagged_iterator andreo.guzzle.middleware
 
-  Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface:
-    alias: Andreo\GuzzleBundle\Middleware\MiddlewareStorage
+  Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface:
+    alias: Andreo\GuzzleBundle\Middleware\MiddlewareRegistry

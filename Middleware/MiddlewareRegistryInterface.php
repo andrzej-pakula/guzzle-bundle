@@ -6,7 +6,9 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Middleware;
 
 
-interface MiddlewareStorageInterface
+use Andreo\GuzzleBundle\RegistryInterface;
+
+interface MiddlewareRegistryInterface
 {
     /**
      * @return iterable<MiddlewareInterface>

@@ -16,4 +16,9 @@ interface MiddlewareInterface
     public function getClientName(): ?string;
 
     public function apply(HandlerStack $stack): void;
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    public function supports(array $config): bool;
 }

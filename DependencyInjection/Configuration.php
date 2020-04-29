@@ -6,10 +6,11 @@ namespace Andreo\GuzzleBundle\DependencyInjection;
 
 use Andreo\GuzzleBundle\Configurator\ConfigProviderInterface;
 use Andreo\OAuthApiConnectorBundle\Security\ApiConnector;
-use GuzzleHttp\RequestOptions;
+use GuzzleHttp\RequestOptions as GuzzleRequestOptions;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Andreo\GuzzleBundle\Client\RequestOptions;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -36,17 +37,21 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('base_uri')->isRequired()->end()
                     ->scalarNode('decorator_id')->defaultNull()->end()
                     ->scalarNode('lazy')->defaultFalse()->end()
-                    ->arrayNode('data_transfer')
+                    ->scalarNode('configurator_factory_id')->defaultNull()->end()
+                    ->arrayNode(RequestOptions::DTO_SUPPORTS)
                         ->canBeDisabled()
                         ->children()
-                            ->scalarNode('format')->defaultValue('json')->end()
+                            ->enumNode(RequestOptions::FORMAT)
+                                ->values(['json', 'xml'])
+                                ->defaultValue('json')
+                            ->end()
                         ->end()
                     ->end()
                     ->arrayNode('options')->defaultValue([])
                         ->arrayPrototype()
                             ->children()
-                                ->scalarNode(RequestOptions::TIMEOUT)->defaultNull()->end()
-                                ->scalarNode(RequestOptions::CONNECT_TIMEOUT)->defaultNull()->end()
+                                ->scalarNode(GuzzleRequestOptions::TIMEOUT)->defaultNull()->end()
+                                ->scalarNode(GuzzleRequestOptions::CONNECT_TIMEOUT)->defaultNull()->end()
                             ->end()
                         ->end()
                     ->end()

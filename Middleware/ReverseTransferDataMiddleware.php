@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Middleware;
 
 use Andreo\GuzzleBundle\Client\RequestOptions;
-use Andreo\GuzzleBundle\DataTransfer\DataMapperInterface;
+use Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry;
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
 use Andreo\GuzzleBundle\DataTransfer\ResponseTransformer;
 use Andreo\GuzzleBundle\Response\Response;
@@ -20,11 +20,11 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
 {
     use InvokableMiddlewareTrait;
 
-    private DataMapperInterface $dataMapper;
+    private DataMapperRegistry $dataMapperRegistry;
 
-    public function __construct(DataMapperInterface $dataMapper)
+    public function __construct(DataMapperRegistry $dataMapperRegistry)
     {
-        $this->dataMapper = $dataMapper;
+        $this->dataMapperRegistry = $dataMapperRegistry;
     }
 
     /**
@@ -43,7 +43,8 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
                     return $response;
                 }
 
-                $transformer = $dto->reverseTransfer($this->dataMapper, new ResponseTransformer($responseDecorator));
+                $dataMapper = $this->dataMapperRegistry->get($options[RequestOptions::FORMAT]);
+                $transformer = $dto->reverseTransfer($dataMapper, new ResponseTransformer($responseDecorator));
 
                 return $transformer->getResponse();
             }
@@ -58,5 +59,10 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
     public function getClientName(): ?string
     {
         return null;
+    }
+
+    public function supports(array $config): bool
+    {
+        return $config[RequestOptions::DTO_SUPPORTS];
     }
 }

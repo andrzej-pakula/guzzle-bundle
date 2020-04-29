@@ -7,7 +7,7 @@ namespace Andreo\GuzzleBundle\Middleware;
 
 use Generator;
 
-final class MiddlewareStorage implements MiddlewareStorageInterface
+final class MiddlewareRegistry implements MiddlewareRegistryInterface
 {
     /** @var array<string, MiddlewareInterface>  */
     private array $middlewares;

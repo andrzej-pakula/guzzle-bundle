@@ -39,4 +39,9 @@ final class DataMapper implements DataMapperInterface
 
         return $dto;
     }
+
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
 }
