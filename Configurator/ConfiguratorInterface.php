@@ -8,7 +8,12 @@ namespace Andreo\GuzzleBundle\Configurator;
 
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 
-interface ConfiguratorInterface extends ConfigProviderInterface
+interface ConfiguratorInterface
 {
     public function addMiddleware(MiddlewareInterface $middleware): void;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getConfig(): array;
 }

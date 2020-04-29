@@ -6,10 +6,13 @@ namespace Andreo\GuzzleBundle\DependencyInjection;
 
 use Andreo\GuzzleBundle\Client\ClientFactoryInterface;
 use Andreo\GuzzleBundle\Configurator\ConfigBuilder;
+use Andreo\GuzzleBundle\Configurator\Configurator;
 use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryInterface;
 use Andreo\GuzzleBundle\Configurator\ConfigInterface;
 use Andreo\GuzzleBundle\Configurator\ConfiguratorInterface;
 use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilder;
+use Andreo\GuzzleBundle\Configurator\DelegatingConfiguration;
+use Andreo\GuzzleBundle\Configurator\DelegatingConfiguratorInterface;
 use Andreo\GuzzleBundle\DataTransfer\DataMapper;
 use Andreo\GuzzleBundle\DataTransfer\DataMapperInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareStorageInterface;
@@ -44,19 +47,21 @@ class AndreoGuzzleExtension extends Extension
     {
         /** @var array<string, mixed> $clientConfig */
         foreach ($clients as $clientName => $clientConfig) {
-            $configBuilderDef = (new Definition(ConfigBuilder::class))
+
+            $configBuilderDef = (new Definition(DelegatingConfiguration::class))
                 ->setPrivate(true)
-                ->addArgument(MiddlewareStorageInterface::class)
-                ->addArgument(ConfiguratorInterface::class)
-                ->addArgument($clientConfig['config_provider_id'])
+                ->addArgument(new Reference(MiddlewareStorageInterface::class))
+                ->addTag('andreo.guzzle.delegating_configurator')
+                ->addArgument($clientConfig['decorator_id'] ?? $clientName)
                 ->addArgument($clientConfig);
+
+            $container->setDefinition(DelegatingConfiguration::class . '' . $clientName, $configBuilderDef);
 
             $clientDef = (new Definition(Client::class))
                 ->setPrivate(true)
                 ->setLazy($clientConfig['lazy'])
                 ->setFactory([new Reference(ClientFactoryInterface::class), 'create'])
-                ->addArgument(Client::class)
-                ->addArgument([$configBuilderDef, 'build']);
+                ->addArgument(new Reference(Configurator::class));
 
             if (null !== $clientConfig['decorator_id']) {
                 $clientDef->addTag('andreo.guzzle_decorated_client', [
@@ -67,7 +72,7 @@ class AndreoGuzzleExtension extends Extension
             $container->setDefinition('andreo.guzzle_client.' . $clientName, $clientDef);
 
             if ($this->isConfigEnabled($container, $clientConfig['data_transfer'])) {
-                $this->registerDataTransfer($clientConfig['data_mapper_format'], $container);
+                $this->registerDataTransfer($clientConfig, $container);
             }
         }
     }
@@ -83,7 +88,7 @@ class AndreoGuzzleExtension extends Extension
         } else {
             $dataMapperDef = (new Definition(DataMapper::class))
                 ->setPrivate(true)
-                ->addArgument(SerializerInterface::class)
+                ->addArgument(new Reference(SerializerInterface::class))
                 ->addArgument($format);
 
             $container->setDefinition($dataMapperId, $dataMapperDef);
@@ -115,5 +120,9 @@ class AndreoGuzzleExtension extends Extension
         $container
             ->registerForAutoconfiguration(MiddlewareInterface::class)
             ->addTag('andreo.guzzle.middleware');
+
+        $container
+            ->registerForAutoconfiguration(DelegatingConfiguratorInterface::class)
+            ->addTag('andreo.guzzle.delegating_configurator');
     }
 }

@@ -6,11 +6,11 @@ declare(strict_types=1);
 namespace Tests\Andreo\GuzzleBundle\App\Controller;
 
 
-use Andreo\GuzzleBundle\Client\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Tests\Andreo\GuzzleBundle\App\Client\FooClient;
+use GuzzleHttp\ClientInterface;
 
 class HomeController extends AbstractController
 {
@@ -28,7 +28,8 @@ class HomeController extends AbstractController
      */
     public function index(FooClient $fooClient): JsonResponse
     {
-        $response = $fooClient->getFoo();
+
+        dump($fooClient); die;
 
         dump((string)$response->getBody()); die;
     }

@@ -11,17 +11,13 @@ services:
 
   Andreo\GuzzleBundle\Configurator\Configurator:
     shared: false
+    arguments:
+      - !tagged_iterator andreo.guzzle.delegating_configurator
 
   Andreo\GuzzleBundle\Configurator\ConfiguratorInterface:
     alias: Andreo\GuzzleBundle\Configurator\Configurator
 
-  Andreo\GuzzleBundle\Configurator\NullConfigProvider:
-
-  Andreo\GuzzleBundle\Configurator\ConfigProviderInterface:
-    alias: Andreo\GuzzleBundle\Configurator\NullConfigProvider
-
-
-### Middleware ###
+  ### Middleware ###
 
   Andreo\GuzzleBundle\Middleware\MiddlewareStorage:
     arguments:

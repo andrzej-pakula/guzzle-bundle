@@ -10,5 +10,5 @@ use GuzzleHttp\ClientInterface;
 
 interface ClientFactoryInterface
 {
-    public function create(string $decoratorClass, ConfiguratorInterface $configBuilder): ClientInterface;
+    public function create(ConfiguratorInterface $configBuilder): ClientInterface;
 }

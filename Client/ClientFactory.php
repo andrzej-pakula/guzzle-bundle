@@ -11,10 +11,8 @@ use GuzzleHttp\ClientInterface;
 
 final class ClientFactory implements ClientFactoryInterface
 {
-    public function create(string $decoratorClass, ConfiguratorInterface $configurator): ClientInterface
+    public function create(ConfiguratorInterface $configurator): ClientInterface
     {
-        return new $decoratorClass(
-            new BaseClient($configurator->getConfig())
-        );
+        return new BaseClient($configurator->getConfig());
     }
 }

@@ -16,6 +16,6 @@ final class FooClient implements ClientInterface
 
     public function getFoo(): ResponseInterface
     {
-        return $this->decorated->get('');
+        return $this->get('/todos/1');
     }
 }
