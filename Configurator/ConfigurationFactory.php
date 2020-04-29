@@ -8,6 +8,7 @@ namespace Andreo\GuzzleBundle\Configurator;
 
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface;
+use Andreo\GuzzleBundle\Middleware\MiddlewareSupportsInterface;
 
 final class ConfigurationFactory implements ConfiguratorFactoryInterface
 {
@@ -38,7 +39,9 @@ final class ConfigurationFactory implements ConfiguratorFactoryInterface
 
         /** @var MiddlewareInterface $middleware */
         foreach ($middlewares as $middleware) {
-            if ($middleware->supports($this->configuration['options'])) {
+            if (is_a($middleware, MiddlewareSupportsInterface::class) &&
+                $middleware->supports($this->configuration['options'])) {
+
                 $configurator->addMiddleware($middleware);
             }
         }

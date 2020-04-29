@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Middleware;
 
-use Andreo\GuzzleBundle\Client\RequestOptions;
+use Andreo\GuzzleBundle\Client\ClientOptions;
 use Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry;
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
 use Andreo\GuzzleBundle\DataTransfer\RequestTransformer;
@@ -15,7 +15,7 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 
-final class TransferDataMiddleware implements InvokableMiddlewareInterface
+final class TransferDataMiddleware implements InvokableMiddlewareInterface, MiddlewareSupportsInterface
 {
     use InvokableMiddlewareTrait;
 
@@ -34,10 +34,10 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface
         $nextHandler = $this->getNextHandler();
 
         /** @var DTOInterface|null $dto */
-        $dto = $options[RequestOptions::DTO] ??= null;
+        $dto = $options[ClientOptions::DTO] ??= null;
 
         if ($dto instanceof DTOInterface) {
-            $dataMapper = $this->dataMapperRegistry->get($options[RequestOptions::DTO_SUPPORTS][RequestOptions::FORMAT]);
+            $dataMapper = $this->dataMapperRegistry->get($options[ClientOptions::DTO_SUPPORTS][ClientOptions::FORMAT]);
             $transformer = $dto->transfer(new RequestTransformer($request, $dataMapper));
 
             $request = $transformer->getRequest();
@@ -58,6 +58,6 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface
 
     public function supports(array $config): bool
     {
-        return !empty($config[RequestOptions::DTO_SUPPORTS]);
+        return !empty($config[ClientOptions::DTO_SUPPORTS]);
     }
 }

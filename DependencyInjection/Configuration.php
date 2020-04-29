@@ -10,7 +10,7 @@ use GuzzleHttp\RequestOptions as GuzzleRequestOptions;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Andreo\GuzzleBundle\Client\RequestOptions;
+use Andreo\GuzzleBundle\Client\ClientOptions;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -40,10 +40,10 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('configurator_factory_id')->defaultNull()->end()
                     ->arrayNode('options')->addDefaultsIfNotSet()
                         ->children()
-                            ->arrayNode(RequestOptions::DTO_SUPPORTS)
+                            ->arrayNode(ClientOptions::DTO_SUPPORTS)
                             ->canBeDisabled()
                                 ->children()
-                                    ->enumNode(RequestOptions::FORMAT)
+                                    ->enumNode(ClientOptions::FORMAT)
                                         ->values(['json', 'xml'])
                                         ->defaultValue('json')
                                     ->end()
