@@ -37,7 +37,7 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface
         $dto = $options[RequestOptions::DTO] ??= null;
 
         if (null !== $dto) {
-            $dataMapper = $this->dataMapperRegistry->get($options[RequestOptions::FORMAT]);
+            $dataMapper = $this->dataMapperRegistry->get($options[RequestOptions::DTO_SUPPORTS][RequestOptions::FORMAT]);
             $transformer = $dto->transfer($dataMapper, new RequestTransformer($request));
 
             $request = $transformer->getRequest();
@@ -58,6 +58,6 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface
 
     public function supports(array $config): bool
     {
-        return $config[RequestOptions::DTO_SUPPORTS];
+        return !empty($config[RequestOptions::DTO_SUPPORTS]);
     }
 }

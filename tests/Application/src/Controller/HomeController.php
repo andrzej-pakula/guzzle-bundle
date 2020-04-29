@@ -29,7 +29,7 @@ class HomeController extends AbstractController
     public function index(FooClient $fooClient): JsonResponse
     {
 
-        dump($fooClient); die;
+        $response = $fooClient->getFoo();
 
         dump((string)$response->getBody()); die;
     }

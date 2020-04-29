@@ -30,6 +30,8 @@ final class Configurator implements ConfiguratorInterface
      */
     public function getConfig(): array
     {
+        $this->config['handler'] = $this->handlerStack;
+
         return array_filter($this->config);
     }
 }

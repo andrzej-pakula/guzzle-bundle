@@ -38,12 +38,12 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
             function (ResponseInterface $response) use ($request, $options) {
                 $responseDecorator = new Response($response);
                 /** @var DTOInterface|null $dto */
-                $dto = $options[RequestOptions::DTO];
+                $dto = $options[RequestOptions::DTO] ??= null;
                 if (null === $dto) {
                     return $response;
                 }
 
-                $dataMapper = $this->dataMapperRegistry->get($options[RequestOptions::FORMAT]);
+                $dataMapper = $this->dataMapperRegistry->get($options[RequestOptions::DTO_SUPPORTS][RequestOptions::FORMAT]);
                 $transformer = $dto->reverseTransfer($dataMapper, new ResponseTransformer($responseDecorator));
 
                 return $transformer->getResponse();
@@ -63,6 +63,6 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
 
     public function supports(array $config): bool
     {
-        return $config[RequestOptions::DTO_SUPPORTS];
+        return !empty($config[RequestOptions::DTO_SUPPORTS]);
     }
 }

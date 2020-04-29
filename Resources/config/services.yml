@@ -22,7 +22,7 @@ services:
     lazy: true
     tags: [andreo.guzzle.data_mapper]
     arguments:
-      - '@Symfony\Component\Messenger\Transport\Serialization\SerializerInterface'
+      - '@serializer'
       - 'json'
 
   andreo.guzzle.xml_data_mapper:
@@ -30,7 +30,7 @@ services:
     lazy: true
     tags: [andreo.guzzle.data_mapper]
     arguments:
-      - '@Symfony\Component\Messenger\Transport\Serialization\SerializerInterface'
+      - '@serializer'
       - 'xml'
 
   Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry:
@@ -43,5 +43,17 @@ services:
     arguments:
       - !tagged_iterator andreo.guzzle.middleware
 
+  Andreo\GuzzleBundle\Middleware\TransferDataMiddleware:
+    tags: [andreo.guzzle.middleware]
+    arguments:
+      - '@Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry'
+
+  Andreo\GuzzleBundle\Middleware\ReverseTransferDataMiddleware:
+    tags: [andreo.guzzle.middleware]
+    arguments:
+      - '@Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry'
+
   Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface:
     alias: Andreo\GuzzleBundle\Middleware\MiddlewareRegistry
+
+
