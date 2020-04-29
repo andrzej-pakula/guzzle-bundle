@@ -41,7 +41,6 @@ class AndreoGuzzleExtension extends Extension
     {
         /** @var array<string, mixed> $clientConfig */
         foreach ($clients as $clientName => $clientConfig) {
-
             $configBuilderDef = (new Definition(ConfigurationFactory::class))
                 ->setPrivate(true)
                 ->addArgument($clientConfig)

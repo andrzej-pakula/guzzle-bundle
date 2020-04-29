@@ -7,7 +7,7 @@ namespace Andreo\GuzzleBundle\DataTransfer;
 
 interface DTOInterface
 {
-    public function transfer(DataMapperInterface $dataMapper, RequestTransformerInterface $transformer): RequestTransformerInterface;
+    public function transfer(RequestTransformerInterface $transformer): RequestTransformerInterface;
 
-    public function reverseTransfer(DataMapperInterface $dataMapper, ResponseTransformerInterface $transformer): ResponseTransformerInterface;
+    public function reverseTransfer(ResponseTransformerInterface $transformer): ResponseTransformerInterface;
 }

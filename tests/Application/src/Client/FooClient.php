@@ -9,6 +9,7 @@ namespace Tests\Andreo\GuzzleBundle\App\Client;
 use Andreo\GuzzleBundle\Client\ClientDecoratorTrait;
 use Andreo\GuzzleBundle\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
+use Tests\Andreo\GuzzleBundle\App\Controller\Dto;
 
 final class FooClient implements ClientInterface
 {
@@ -16,6 +17,8 @@ final class FooClient implements ClientInterface
 
     public function getFoo(): ResponseInterface
     {
-        return $this->get('/todos/1');
+        return $this->get('/todos/1', [
+            'dto' => new Dto(),
+        ]);
     }
 }

@@ -38,7 +38,7 @@ final class ConfigurationFactory implements ConfiguratorFactoryInterface
 
         /** @var MiddlewareInterface $middleware */
         foreach ($middlewares as $middleware) {
-            if ($middleware->supports($this->configuration)) {
+            if ($middleware->supports($this->configuration['options'])) {
                 $configurator->addMiddleware($middleware);
             }
         }
@@ -50,7 +50,6 @@ final class ConfigurationFactory implements ConfiguratorFactoryInterface
 
         $configurator->config = $this->configuration['options'];
         $configurator->config['base_uri'] = $this->configuration['base_uri'];
-        $configurator->config['dto_supports'] =  $this->configuration['dto_supports'];
 
         if (null !== $this->delegatingConfiguratorFactory) {
             $this->delegatingConfiguratorFactory->create($configurator);

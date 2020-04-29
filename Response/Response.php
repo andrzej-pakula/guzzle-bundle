@@ -15,10 +15,6 @@ final class Response implements ResponseInterface
 
     public function withDTO(DTOInterface $dto): ResponseInterface
     {
-        if ($dto === $this->dto) {
-            return $this;
-        }
-
         $new = clone $this;
         $new->dto = $dto;
 

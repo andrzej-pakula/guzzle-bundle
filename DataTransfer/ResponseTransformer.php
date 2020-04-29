@@ -15,22 +15,25 @@ final class ResponseTransformer implements ResponseTransformerInterface
      */
     private Response $response;
 
+    private DataMapperInterface $dataMapper;
+
     /**
      * @param Response&ResponseInterface $response
      */
-    public function __construct(Response $response)
+    public function __construct(Response $response, DataMapperInterface $dataMapper)
     {
         $this->response = $response;
+        $this->dataMapper = $dataMapper;
     }
 
     /**
      * @return Response&ResponseInterface
      */
-    public function withDTO(DataMapperInterface $dataMapper, DTOInterface $data): ResponseTransformerInterface
+    public function withDTO(DTOInterface $data): ResponseTransformerInterface
     {
-        $dto = $dataMapper->deserialize($this->response->getBody()->getContents(), $data);
+        $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), $data);
 
-        return new self($this->response->withDTO($dto));
+        return new self($this->response->withDTO($dto), $this->dataMapper);
     }
 
     public function getResponse(): Response

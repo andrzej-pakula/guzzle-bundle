@@ -6,3 +6,5 @@ andreo_guzzle:
       options: []
     bar:
       base_uri: 'https://bar.com'
+      options:
+        dto_supports: false

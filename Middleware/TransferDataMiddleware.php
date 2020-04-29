@@ -36,9 +36,9 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface
         /** @var DTOInterface|null $dto */
         $dto = $options[RequestOptions::DTO] ??= null;
 
-        if (null !== $dto) {
+        if ($dto instanceof DTOInterface) {
             $dataMapper = $this->dataMapperRegistry->get($options[RequestOptions::DTO_SUPPORTS][RequestOptions::FORMAT]);
-            $transformer = $dto->transfer($dataMapper, new RequestTransformer($request));
+            $transformer = $dto->transfer(new RequestTransformer($request, $dataMapper));
 
             $request = $transformer->getRequest();
         }

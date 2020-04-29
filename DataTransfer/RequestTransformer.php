@@ -13,24 +13,27 @@ final class RequestTransformer implements RequestTransformerInterface
 {
     private RequestInterface $request;
 
-    public function __construct(RequestInterface $request)
+    private DataMapperInterface $dataMapper;
+
+    public function __construct(RequestInterface $request, DataMapperInterface $dataMapper)
     {
         $this->request = $request;
+        $this->dataMapper = $dataMapper;
     }
 
-    public function withBody(DataMapperInterface $dataMapper, DTOInterface $data): RequestTransformerInterface
+    public function withBody(DTOInterface $data): RequestTransformerInterface
     {
-        $stream = stream_for($dataMapper->serialize($data));
+        $stream = stream_for($this->dataMapper->serialize($data));
 
-        return new self($this->request->withBody($stream));
+        return new self($this->request->withBody($stream), $this->dataMapper);
     }
 
-    public function withQuery(DataMapperInterface $dataMapper, DTOInterface $data): RequestTransformerInterface
+    public function withQuery(DTOInterface $data): RequestTransformerInterface
     {
-        $query = http_build_query($dataMapper->normalize($data));
+        $query = http_build_query($this->dataMapper->normalize($data));
         $uri = $this->request->getUri()->withQuery($query);
 
-        return new self($this->request->withUri($uri));
+        return new self($this->request->withUri($uri), $this->dataMapper);
     }
 
     public function getRequest(): RequestInterface
