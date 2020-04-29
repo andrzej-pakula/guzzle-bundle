@@ -31,6 +31,6 @@ final class DataMapperRegistry
             return $this->dataMappers[$format];
         }
 
-        throw new RuntimeException('Date mapper not found for format.');
+        throw new RuntimeException("No data mapper found for format: $format");
     }
 }
