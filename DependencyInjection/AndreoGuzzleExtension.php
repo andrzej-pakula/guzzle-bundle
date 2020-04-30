@@ -8,7 +8,6 @@ use Andreo\GuzzleBundle\Client\ClientFactoryInterface;
 use Andreo\GuzzleBundle\Configurator\ConfigBuilder;
 use Andreo\GuzzleBundle\Configurator\Configurator;
 use Andreo\GuzzleBundle\Configurator\ConfigInterface;
-use Andreo\GuzzleBundle\Configurator\ConfiguratorInterface;
 use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilder;
 use Andreo\GuzzleBundle\Configurator\ConfigurationFactory;
 use Andreo\GuzzleBundle\DataTransfer\DataMapperInterface;
@@ -47,8 +46,8 @@ class AndreoGuzzleExtension extends Extension
                 ->addArgument($clientConfig['decorator_id'] ?? $clientName)
                 ->addArgument(new Reference(MiddlewareRegistryInterface::class));
 
-            if (null !== $clientConfig['configurator_factory_id']) {
-                $configBuilderDef->addArgument(new Reference($clientConfig['configurator_factory_id']));
+            if (null !== $clientConfig['config_provider_id']) {
+                $configBuilderDef->addArgument(new Reference($clientConfig['config_provider_id']));
             }
 
             $configuratorDef = (new Definition(Configurator::class))
