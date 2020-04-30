@@ -22,7 +22,3 @@ services:
     Tests\Andreo\GuzzleBundle\App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
-
-    Tests\Andreo\GuzzleBundle\App\Controller\HomeController:
-        arguments:
-            $barClient: '@andreo.guzzle_client.bar'
