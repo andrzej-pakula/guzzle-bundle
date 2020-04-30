@@ -6,9 +6,7 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Configurator;
 
 
-use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface;
-use Andreo\GuzzleBundle\Middleware\MiddlewareSupportsInterface;
 
 final class ConfigurationFactory implements ConfiguratorFactoryInterface
 {
@@ -19,45 +17,31 @@ final class ConfigurationFactory implements ConfiguratorFactoryInterface
 
     private MiddlewareRegistryInterface $middlewareStorage;
 
-    private ?ConfiguratorFactoryInterface $delegatingConfiguratorFactory;
+    private ?ConfigProviderInterface $configProvider;
 
     public function __construct(
         array $configuration,
         string $clientName,
         MiddlewareRegistryInterface $middlewareStorage,
-        ?ConfiguratorFactoryInterface $delegatingConfiguratorFactory = null
+        ?ConfigProviderInterface $configProvider = null
     ) {
         $this->configuration = $configuration;
         $this->clientName = $clientName;
         $this->middlewareStorage = $middlewareStorage;
-        $this->delegatingConfiguratorFactory = $delegatingConfiguratorFactory;
+        $this->configProvider = $configProvider;
     }
 
-    private function setMiddlewares(ConfiguratorInterface $configurator): void
+    public function create(): ConfiguratorInterface
     {
         $middlewares = $this->middlewareStorage->get($this->clientName);
 
-        /** @var MiddlewareInterface $middleware */
-        foreach ($middlewares as $middleware) {
-            if (is_a($middleware, MiddlewareSupportsInterface::class) &&
-                $middleware->supports($this->configuration['options'])) {
+        $config = $this->configuration['options'];
+        $config['base_uri'] = $this->configuration['base_uri'];
 
-                $configurator->addMiddleware($middleware);
-            }
-        }
-    }
-
-    public function create(ConfiguratorInterface $configurator): ConfiguratorInterface
-    {
-        $this->setMiddlewares($configurator);
-
-        $configurator->config = $this->configuration['options'];
-        $configurator->config['base_uri'] = $this->configuration['base_uri'];
-
-        if (null !== $this->delegatingConfiguratorFactory) {
-            $this->delegatingConfiguratorFactory->create($configurator);
+        if (null !== $this->configProvider) {
+            $config = array_replace_recursive($config, $this->configProvider->getConfig());
         }
 
-        return $configurator;
+        return new Configurator($config, $middlewares);
     }
 }

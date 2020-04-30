@@ -8,5 +8,5 @@ namespace Andreo\GuzzleBundle\Configurator;
 
 interface ConfiguratorFactoryInterface
 {
-    public function create(ConfiguratorInterface $configurator): ConfiguratorInterface;
+    public function create(): ConfiguratorInterface;
 }

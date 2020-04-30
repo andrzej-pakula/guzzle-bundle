@@ -17,7 +17,7 @@ final class MiddlewareRegistry implements MiddlewareRegistryInterface
      */
     public function __construct(iterable $middlewares)
     {
-        $this->setMiddlewares($middlewares);
+        $this->register($middlewares);
     }
 
     /**
@@ -31,7 +31,7 @@ final class MiddlewareRegistry implements MiddlewareRegistryInterface
     /**
      * @param iterable<MiddlewareInterface> $middlewares
      */
-    private function setMiddlewares(iterable $middlewares): void
+    private function register(iterable $middlewares): void
     {
         /** @var MiddlewareInterface $middleware */
         foreach ($middlewares as $middleware) {

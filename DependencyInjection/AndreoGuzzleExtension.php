@@ -52,8 +52,7 @@ class AndreoGuzzleExtension extends Extension
             }
 
             $configuratorDef = (new Definition(Configurator::class))
-                ->setFactory([$configBuilderDef, 'create'])
-                ->addArgument(new Reference(ConfiguratorInterface::class));
+                ->setFactory([$configBuilderDef, 'create']);
 
             $clientDef = (new Definition(Client::class))
                 ->setPrivate(true)

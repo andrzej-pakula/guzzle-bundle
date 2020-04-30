@@ -7,14 +7,6 @@ services:
   Andreo\GuzzleBundle\Client\ClientFactoryInterface:
     alias: Andreo\GuzzleBundle\Client\ClientFactory
 
-### Configurator ###
-
-  Andreo\GuzzleBundle\Configurator\Configurator:
-    shared: false
-
-  Andreo\GuzzleBundle\Configurator\ConfiguratorInterface:
-    alias: Andreo\GuzzleBundle\Configurator\Configurator
-
 ### DataTransfer ###
 
   andreo.guzzle.json_data_mapper:
@@ -45,11 +37,13 @@ services:
 
   Andreo\GuzzleBundle\Middleware\TransferDataMiddleware:
     tags: [andreo.guzzle.middleware]
+    lazy: true
     arguments:
       - '@Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry'
 
   Andreo\GuzzleBundle\Middleware\ReverseTransferDataMiddleware:
     tags: [andreo.guzzle.middleware]
+    lazy: true
     arguments:
       - '@Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry'
 
