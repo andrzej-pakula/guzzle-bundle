@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 
-namespace Andreo\GuzzleBundle\Client;
+namespace Andreo\GuzzleBundle\Request;
 
 
-final class RequestMethods
+final class Methods
 {
     public const METHOD_GET = 'GET';
 

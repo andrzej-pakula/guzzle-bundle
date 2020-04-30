@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\DependencyInjection;
 
-use Andreo\GuzzleBundle\Configurator\ConfigProviderInterface;
 use Andreo\OAuthApiConnectorBundle\Security\ApiConnector;
-use GuzzleHttp\RequestOptions as GuzzleRequestOptions;
+use GuzzleHttp\RequestOptions;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Andreo\GuzzleBundle\Client\ClientOptions;
+use Andreo\GuzzleBundle\Request\Options;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -40,14 +39,14 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('config_provider_id')->defaultNull()->end()
                     ->arrayNode('options')->addDefaultsIfNotSet()
                         ->children()
-                            ->arrayNode(ClientOptions::DTO_SUPPORTS)
+                            ->arrayNode(Options::DTO_SUPPORTS)
                             ->canBeDisabled()
                                 ->children()
-                                    ->scalarNode(ClientOptions::FORMAT)->defaultValue('json')->end()
+                                    ->scalarNode(Options::FORMAT)->defaultValue('json')->end()
                                 ->end()
                             ->end()
-                            ->scalarNode(GuzzleRequestOptions::TIMEOUT)->defaultNull()->end()
-                            ->scalarNode(GuzzleRequestOptions::CONNECT_TIMEOUT)->defaultNull()->end()
+                            ->scalarNode(RequestOptions::TIMEOUT)->defaultNull()->end()
+                            ->scalarNode(RequestOptions::CONNECT_TIMEOUT)->defaultNull()->end()
                         ->end()
                     ->end()
                 ->end()
