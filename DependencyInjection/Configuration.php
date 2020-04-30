@@ -37,7 +37,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('base_uri')->isRequired()->end()
                     ->scalarNode('decorator_id')->defaultNull()->end()
                     ->scalarNode('lazy')->defaultFalse()->end()
-                    ->scalarNode('configurator_factory_id')->defaultNull()->end()
+                    ->scalarNode('config_provider_id')->defaultNull()->end()
                     ->arrayNode('options')->addDefaultsIfNotSet()
                         ->children()
                             ->arrayNode(ClientOptions::DTO_SUPPORTS)
