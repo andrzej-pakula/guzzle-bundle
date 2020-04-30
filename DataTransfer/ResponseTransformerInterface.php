@@ -12,5 +12,7 @@ interface ResponseTransformerInterface
 {
     public function withDTO(DTOInterface $data): self;
 
+    public function withDTOs(DTOInterface $data): self;
+
     public function getResponse(): ResponseInterface;
 }

@@ -40,7 +40,9 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface, Midd
             $dataMapper = $this->dataMapperRegistry->get($options[ClientOptions::DTO_SUPPORTS][ClientOptions::FORMAT]);
             $transformer = $dto->transfer(new RequestTransformer($request, $dataMapper));
 
-            $request = $transformer->getRequest();
+            $request = $transformer->getRequest()
+                ->withHeader('Content-Type', 'application/json')
+                ->withHeader('Accept', 'application/json');
         }
 
         return $nextHandler($request, $options);

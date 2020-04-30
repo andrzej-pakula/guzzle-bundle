@@ -10,7 +10,10 @@ interface DataMapperInterface
 
     public function serialize(DTOInterface $data, array $options = []): string;
 
-    public function deserialize(string $content, DTOInterface $data, array $options = []): DTOInterface;
+    /**
+     * @return DTOInterface|DTOInterface[]
+     */
+    public function deserialize(string $content, string $type, array $options = []);
 
     public function getFormat(): string;
 }

@@ -6,8 +6,9 @@ declare(strict_types=1);
 namespace Tests\Andreo\GuzzleBundle\App\Controller;
 
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Tests\Andreo\GuzzleBundle\App\Client\FooClient;
 use GuzzleHttp\ClientInterface;
@@ -26,10 +27,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/home")
      */
-    public function index(FooClient $fooClient): JsonResponse
+    public function index(FooClient $fooClient, LoggerInterface $logger): Response
     {
-        $response = $fooClient->getFoo();
+        $response = $fooClient->postPosts();
 
         dump($response); die;
+
+        return new Response('ok');
     }
 }

@@ -32,12 +32,9 @@ final class DataMapper implements DataMapperInterface
         return $this->serializer->serialize($data, $this->format, $options);
     }
 
-    public function deserialize(string $content, DTOInterface $data, array $options = []): DTOInterface
+    public function deserialize(string $content, string $type, array $options = [])
     {
-        /** @var DTOInterface $dto */
-        $dto = $this->serializer->deserialize($content, get_class($data), $this->format, $options);
-
-        return $dto;
+        return $this->serializer->deserialize($content, $type, $this->format, $options);
     }
 
     public function getFormat(): string
