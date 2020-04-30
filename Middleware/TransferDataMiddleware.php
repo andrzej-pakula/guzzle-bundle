@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Middleware;
 
-use Andreo\GuzzleBundle\Client\Options;
+use Andreo\GuzzleBundle\Request\Options;
 use Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry;
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
 use Andreo\GuzzleBundle\DataTransfer\RequestTransformer;
