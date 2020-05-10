@@ -32,12 +32,14 @@ final class Configuration implements ConfigurationInterface
 
         $clientsNode
             ->arrayPrototype()
+            ->addDefaultsIfNotSet()
                 ->children()
-                    ->scalarNode('base_uri')->isRequired()->end()
+                    ->scalarNode('base_uri')->defaultNull()->end()
                     ->scalarNode('decorator_id')->defaultNull()->end()
                     ->scalarNode('lazy')->defaultFalse()->end()
                     ->scalarNode('config_provider_id')->defaultNull()->end()
-                    ->arrayNode('options')->addDefaultsIfNotSet()
+                    ->arrayNode('options')
+                    ->addDefaultsIfNotSet()
                         ->children()
                             ->arrayNode(Options::DTO_SUPPORTS)
                             ->canBeDisabled()

@@ -38,12 +38,15 @@ class DecorateClientPass implements CompilerPassInterface
                 } else {
                     $clientDecoratorDef = (new Definition($attributes['decorator_id']));
                 }
-                
+
                 $clientDecoratorDef
                     ->setPrivate(true)
                     ->setLazy($clientDef->isLazy())
                     ->setDecoratedService($clientId, $attributes['decorator_id'] . '.inner')
-                    ->addArgument(new Reference($attributes['decorator_id'] . '.inner'));
+                    ->setArguments([
+                        new Reference($attributes['decorator_id'] . '.inner'),
+                        ...$clientDecoratorDef->getArguments()
+                    ]);
 
                 $container->setDefinition($attributes['decorator_id'], $clientDecoratorDef);
             }
