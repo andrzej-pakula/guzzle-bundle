@@ -9,12 +9,23 @@ services:
 
 ### DataTransfer ###
 
+  andreo.guzzle.normalizer.object:
+    arguments:
+      - null
+      - '@serializer.name_converter.camel_case_to_snake_case'
+
+  andreo.guzzle.serializer:
+    class: Symfony\Component\Serializer\Serializer
+    arguments:
+      - ['@andreo.guzzle.normalizer.object']
+      - ['@serializer.encoder.json']
+
   andreo.guzzle.json_data_mapper:
     class: Andreo\GuzzleBundle\DataTransfer\DataMapper
     lazy: true
     tags: [andreo.guzzle.data_mapper]
     arguments:
-      - '@serializer'
+      - '@andreo.guzzle.serializer'
       - 'json'
 
   andreo.guzzle.xml_data_mapper:
@@ -22,7 +33,7 @@ services:
     lazy: true
     tags: [andreo.guzzle.data_mapper]
     arguments:
-      - '@serializer'
+      - '@andreo.guzzle.serializer'
       - 'xml'
 
   Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry:
