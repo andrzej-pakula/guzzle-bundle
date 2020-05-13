@@ -29,16 +29,16 @@ final class ResponseTransformer implements ResponseTransformerInterface
     /**
      * @return Response&ResponseInterface
      */
-    public function withDTO(DTOInterface $data): ResponseTransformerInterface
+    public function withDTO(string $type): ResponseTransformerInterface
     {
-        $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), get_class($data));
+        $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), $type);
 
         return new self($this->response->withDTO($dto), $this->dataMapper);
     }
 
-    public function withDTOs(DTOInterface $data): ResponseTransformerInterface
+    public function withDTOs(string $type): ResponseTransformerInterface
     {
-        $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), get_class($data) . '[]');
+        $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), $type . '[]');
 
         return new self($this->response->withDTOs($dto), $this->dataMapper);
     }
