@@ -2,4 +2,4 @@ andreo_guzzle:
   clients:
     foo:
       base_uri: 'https://jsonplaceholder.typicode.com'
-      decorator_id: Tests\Andreo\GuzzleBundle\App\Client\FooClient
+      client_decorator_id: Tests\Andreo\GuzzleBundle\App\Client\FooClient

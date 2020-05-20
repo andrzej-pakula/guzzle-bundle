@@ -8,27 +8,21 @@ namespace Andreo\GuzzleBundle\DataTransfer;
 
 use Andreo\GuzzleBundle\RegistryInterface;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
-final class DataMapperRegistry
+final class DataMapperLocator
 {
-    /** @var iterable<DataMapperInterface> */
-    private array $dataMappers;
+    private ServiceLocator $dataMapperLocator;
 
-    /**
-     * @param iterable<DataMapperInterface> $dataMappers
-     */
-    public function __construct(iterable $dataMappers)
+    public function __construct(ServiceLocator $dataMapperLocator)
     {
-        /** @var DataMapperInterface $dataMapper */
-        foreach ($dataMappers as $dataMapper) {
-            $this->dataMappers[$dataMapper->getFormat()] = $dataMapper;
-        }
+        $this->dataMapperLocator = $dataMapperLocator;
     }
 
     public function get(string $format): DataMapperInterface
     {
-        if (array_key_exists($format, $this->dataMappers)) {
-            return $this->dataMappers[$format];
+        if ($this->dataMapperLocator->has($format)) {
+            return $this->dataMapperLocator->get($format);
         }
 
         throw new RuntimeException("No data mapper found for format: $format");

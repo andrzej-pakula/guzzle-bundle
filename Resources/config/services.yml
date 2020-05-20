@@ -7,6 +7,12 @@ services:
   Andreo\GuzzleBundle\Client\ClientFactoryInterface:
     alias: Andreo\GuzzleBundle\Client\ClientFactory
 
+### Configurator ###
+
+  Andreo\GuzzleBundle\Configurator\ConfigurationFactory:
+    arguments:
+      - !tagged_iterator andreo.guzzle.middleware
+
 ### DataTransfer ###
 
   andreo.guzzle.normalizer.object:
@@ -37,29 +43,19 @@ services:
       - '@andreo.guzzle.serializer'
       - 'xml'
 
-  Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry:
-    arguments:
-      - !tagged_iterator andreo.guzzle.data_mapper
+  Andreo\GuzzleBundle\DataTransfer\DataMapperLocator:
+    arguments: [!tagged_locator { tag: 'andreo.guzzle.data_mapper', default_index_method: 'getFormat' }]
 
   ### Middleware ###
-
-  Andreo\GuzzleBundle\Middleware\MiddlewareRegistry:
-    arguments:
-      - !tagged_iterator andreo.guzzle.middleware
 
   Andreo\GuzzleBundle\Middleware\TransferDataMiddleware:
     tags: [andreo.guzzle.middleware]
     lazy: true
     arguments:
-      - '@Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry'
+      - '@Andreo\GuzzleBundle\DataTransfer\DataMapperLocator'
 
   Andreo\GuzzleBundle\Middleware\ReverseTransferDataMiddleware:
     tags: [andreo.guzzle.middleware]
     lazy: true
     arguments:
-      - '@Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry'
-
-  Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface:
-    alias: Andreo\GuzzleBundle\Middleware\MiddlewareRegistry
-
-
+      - '@Andreo\GuzzleBundle\DataTransfer\DataMapperLocator'
