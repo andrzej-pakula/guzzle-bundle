@@ -7,20 +7,17 @@ namespace Andreo\GuzzleBundle\Client;
 
 use Andreo\GuzzleBundle\Response\RequestFactory;
 use Andreo\GuzzleBundle\Response\Response;
-use GuzzleHttp\ClientInterface as BaseClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Andreo\GuzzleBundle\Request\Methods;
+use GuzzleHttp\ClientInterface;
 
 trait ClientDecoratorTrait
 {
-    /**
-     * @var BaseClientInterface
-     */
-    private BaseClientInterface $decorated;
+    private ClientInterface $decorated;
 
-    public function __construct(BaseClientInterface $decorated)
+    public function __construct(ClientInterface $decorated)
     {
         $this->decorated = $decorated;
     }
