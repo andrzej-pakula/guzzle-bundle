@@ -35,7 +35,7 @@ final class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('base_uri')->defaultNull()->end()
-                    ->scalarNode('decorator_id')->defaultNull()->end()
+                    ->scalarNode('client_decorator_id')->defaultNull()->end()
                     ->scalarNode('lazy')->defaultFalse()->end()
                     ->scalarNode('config_provider_id')->defaultNull()->end()
                     ->arrayNode('options')

@@ -6,42 +6,57 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Configurator;
 
 
-use Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface;
+use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
+use Andreo\GuzzleBundle\Middleware\MiddlewareSupportsInterface;
+use Generator;
 
 final class ConfigurationFactory implements ConfiguratorFactoryInterface
 {
-    /** @var array<string, mixed> */
-    private array $configuration;
-
-    private string $clientName;
-
-    private MiddlewareRegistryInterface $middlewareStorage;
+    /** @var iterable<MiddlewareInterface>  */
+    private iterable $middlewares;
 
     private ?ConfigProviderInterface $configProvider;
 
     public function __construct(
-        array $configuration,
-        string $clientName,
-        MiddlewareRegistryInterface $middlewareStorage,
+        iterable $middlewares,
         ?ConfigProviderInterface $configProvider = null
     ) {
-        $this->configuration = $configuration;
-        $this->clientName = $clientName;
-        $this->middlewareStorage = $middlewareStorage;
+        $this->middlewares = $middlewares;
         $this->configProvider = $configProvider;
     }
 
-    public function create(): ConfiguratorInterface
+    /**
+     * @param array<string, mixed> $configuration
+     */
+    public function __invoke(string $clientName, array $configuration): ConfiguratorInterface
     {
-        $middlewares = $this->middlewareStorage->get($this->clientName);
-
-        $config = $this->configuration['options'];
-        $config['base_uri'] = $this->configuration['base_uri'];
+        $config = $configuration['options'];
+        $config['base_uri'] = $configuration['base_uri'];
 
         if (null !== $this->configProvider) {
             $config = array_replace_recursive($config, $this->configProvider->getConfig());
         }
 
-        return new Configurator($config, $middlewares);
+        return new Configurator($config, $this->getSupportedMiddlewares($clientName, $config));
+    }
+
+    /**
+     * @return Generator<MiddlewareInterface>
+     */
+    private function getSupportedMiddlewares(string $clientName, array $config): Generator
+    {
+        /** @var MiddlewareInterface $middleware */
+        foreach ($this->middlewares as $middleware) {
+            if ($middleware instanceof MiddlewareSupportsInterface && $middleware->supports($clientName, $config)) {
+                yield $middleware;
+            } else {
+                yield $middleware;
+            }
+        }
+    }
+
+    public function withConfigProvider(ConfigProviderInterface $configProvider): self
+    {
+        return new self($this->middlewares, $configProvider);
     }
 }

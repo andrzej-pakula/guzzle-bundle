@@ -12,6 +12,7 @@ use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilder;
 use Andreo\GuzzleBundle\Configurator\ConfigurationFactory;
 use Andreo\GuzzleBundle\DataTransfer\DataMapperInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface;
+use GuzzleHttp\ClientInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -20,7 +21,6 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryFactory;
-use GuzzleHttp\Client;
 
 
 class AndreoGuzzleExtension extends Extension
@@ -40,20 +40,22 @@ class AndreoGuzzleExtension extends Extension
     {
         /** @var array<string, mixed> $clientConfig */
         foreach ($clients as $clientName => $clientConfig) {
-            $configBuilderDef = (new Definition(ConfigurationFactory::class))
-                ->setPrivate(true)
-                ->addArgument($clientConfig)
-                ->addArgument($clientConfig['decorator_id'] ?? $clientName)
-                ->addArgument(new Reference(MiddlewareRegistryInterface::class));
+            $configuratorDef = new Definition(Configurator::class);
+            if (null === $clientConfig['config_provider_id']) {
+                $configuratorDef->setFactory(new Reference(ConfigurationFactory::class));
+            } else {
+                $configuratorFactory = (new Definition(ConfigurationFactory::class))
+                    ->setFactory([new Reference(ConfigurationFactory::class), 'withConfigProvider'])
+                    ->addArgument(new Reference($clientConfig['config_provider_id']));
 
-            if (null !== $clientConfig['config_provider_id']) {
-                $configBuilderDef->addArgument(new Reference($clientConfig['config_provider_id']));
+                $configuratorDef->setFactory($configuratorFactory);
             }
+            $configuratorDef->setArguments([
+                $clientConfig['client_decorator_id'] ?? $clientName,
+                $clientConfig
+            ]);
 
-            $configuratorDef = (new Definition(Configurator::class))
-                ->setFactory([$configBuilderDef, 'create']);
-
-            $clientDef = (new Definition(Client::class))
+            $clientDef = (new Definition(ClientInterface::class))
                 ->setPrivate(true)
                 ->setLazy($clientConfig['lazy'])
                 ->setFactory([new Reference(ClientFactoryInterface::class), 'create'])
@@ -61,7 +63,7 @@ class AndreoGuzzleExtension extends Extension
 
             if (null !== $clientConfig['decorator_id']) {
                 $clientDef->addTag('andreo.guzzle_decorated_client', [
-                    'decorator_id' => $clientConfig['decorator_id']
+                    'decorator_id' => $clientConfig['client_decorator_id']
                 ]);
             }
 

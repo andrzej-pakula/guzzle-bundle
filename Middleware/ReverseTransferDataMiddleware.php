@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\Middleware;
 
 use Andreo\GuzzleBundle\Request\Options;
-use Andreo\GuzzleBundle\DataTransfer\DataMapperRegistry;
+use Andreo\GuzzleBundle\DataTransfer\DataMapperLocator;
 use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
 use Andreo\GuzzleBundle\DataTransfer\ResponseTransformer;
 use Andreo\GuzzleBundle\Response\Response;
@@ -20,11 +20,11 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
 {
     use InvokableMiddlewareTrait;
 
-    private DataMapperRegistry $dataMapperRegistry;
+    private DataMapperLocator $dataMapperLocator;
 
-    public function __construct(DataMapperRegistry $dataMapperRegistry)
+    public function __construct(DataMapperLocator $dataMapperLocator)
     {
-        $this->dataMapperRegistry = $dataMapperRegistry;
+        $this->dataMapperLocator = $dataMapperLocator;
     }
 
     /**
@@ -40,7 +40,7 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
                 $dto = $options[Options::DTO] ??= null;
 
                 if ($dto instanceof DTOInterface) {
-                    $dataMapper = $this->dataMapperRegistry->get($options[Options::DTO_SUPPORTS][Options::FORMAT]);
+                    $dataMapper = $this->dataMapperLocator->get($options[Options::DTO_SUPPORTS][Options::FORMAT]);
                     $transformer = $dto->reverseTransfer(new ResponseTransformer(new Response($response), $dataMapper));
                     $response = $transformer->getResponse();
                 }
@@ -55,13 +55,8 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
         $stack->unshift(new InvokableMiddlewareHandler($this), self::class);
     }
 
-    public function getClientName(): ?string
+    public function supports(string $clientName, array $options): bool
     {
-        return null;
-    }
-
-    public function supports(array $config): bool
-    {
-        return !empty($config[Options::DTO_SUPPORTS]);
+        return !empty($options[Options::DTO_SUPPORTS]);
     }
 }
