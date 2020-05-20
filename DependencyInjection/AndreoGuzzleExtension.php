@@ -61,7 +61,7 @@ class AndreoGuzzleExtension extends Extension
                 ->setFactory([new Reference(ClientFactoryInterface::class), 'create'])
                 ->addArgument($configuratorDef);
 
-            if (null !== $clientConfig['decorator_id']) {
+            if (null !== $clientConfig['client_decorator_id']) {
                 $clientDef->addTag('andreo.guzzle_decorated_client', [
                     'decorator_id' => $clientConfig['client_decorator_id']
                 ]);
@@ -76,9 +76,5 @@ class AndreoGuzzleExtension extends Extension
         $container
             ->registerForAutoconfiguration(MiddlewareInterface::class)
             ->addTag('andreo.guzzle.middleware');
-
-        $container
-            ->registerForAutoconfiguration(DataMapperInterface::class)
-            ->addTag('andreo.guzzle.data_mapper');
     }
 }

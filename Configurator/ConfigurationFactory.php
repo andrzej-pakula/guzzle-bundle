@@ -10,7 +10,7 @@ use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareSupportsInterface;
 use Generator;
 
-final class ConfigurationFactory implements ConfiguratorFactoryInterface
+final class ConfigurationFactory
 {
     /** @var iterable<MiddlewareInterface>  */
     private iterable $middlewares;
@@ -47,8 +47,10 @@ final class ConfigurationFactory implements ConfiguratorFactoryInterface
     {
         /** @var MiddlewareInterface $middleware */
         foreach ($this->middlewares as $middleware) {
-            if ($middleware instanceof MiddlewareSupportsInterface && $middleware->supports($clientName, $config)) {
-                yield $middleware;
+            if ($middleware instanceof MiddlewareSupportsInterface) {
+                if ($middleware->supports($clientName, $config)) {
+                    yield $middleware;
+                }
             } else {
                 yield $middleware;
             }

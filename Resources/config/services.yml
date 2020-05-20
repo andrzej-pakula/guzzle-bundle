@@ -30,7 +30,8 @@ services:
   andreo.guzzle.json_data_mapper:
     class: Andreo\GuzzleBundle\DataTransfer\DataMapper
     lazy: true
-    tags: [andreo.guzzle.data_mapper]
+    tags:
+      - { name: 'andreo.guzzle.data_mapper', key: 'json' }
     arguments:
       - '@andreo.guzzle.serializer'
       - 'json'
@@ -38,15 +39,16 @@ services:
   andreo.guzzle.xml_data_mapper:
     class: Andreo\GuzzleBundle\DataTransfer\DataMapper
     lazy: true
-    tags: [andreo.guzzle.data_mapper]
+    tags:
+      - { name: 'andreo.guzzle.data_mapper', key: 'xml' }
     arguments:
       - '@andreo.guzzle.serializer'
       - 'xml'
 
   Andreo\GuzzleBundle\DataTransfer\DataMapperLocator:
-    arguments: [!tagged_locator { tag: 'andreo.guzzle.data_mapper', default_index_method: 'getFormat' }]
+    arguments: [!tagged_locator { tag: 'andreo.guzzle.data_mapper', index_by: 'key' }]
 
-  ### Middleware ###
+### Middleware ###
 
   Andreo\GuzzleBundle\Middleware\TransferDataMiddleware:
     tags: [andreo.guzzle.middleware]

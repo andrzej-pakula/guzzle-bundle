@@ -57,6 +57,6 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
 
     public function supports(string $clientName, array $options): bool
     {
-        return !empty($options[Options::DTO_SUPPORTS]);
+        return $options[Options::DTO_SUPPORTS]['enabled'];
     }
 }

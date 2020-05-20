@@ -14,6 +14,4 @@ interface DataMapperInterface
      * @return DTOInterface|DTOInterface[]
      */
     public function deserialize(string $content, string $type, array $options = []);
-
-    public function getFormat(): string;
 }

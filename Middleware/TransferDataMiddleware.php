@@ -55,6 +55,6 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface, Midd
 
     public function supports(string $clientName, array $options): bool
     {
-        return !empty($options[Options::DTO_SUPPORTS]);
+        return $options[Options::DTO_SUPPORTS]['enabled'];
     }
 }

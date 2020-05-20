@@ -36,9 +36,4 @@ final class DataMapper implements DataMapperInterface
     {
         return $this->serializer->deserialize($content, $type, $this->format, $options);
     }
-
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
 }
