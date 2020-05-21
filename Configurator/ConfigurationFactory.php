@@ -10,7 +10,7 @@ use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareSupportsInterface;
 use Generator;
 
-final class ConfigurationFactory
+final class ConfigurationFactory implements ConfiguratorFactoryInterface
 {
     /** @var iterable<MiddlewareInterface>  */
     private iterable $middlewares;
@@ -28,11 +28,11 @@ final class ConfigurationFactory
     /**
      * @param array<string, mixed> $configuration
      */
-    public function __invoke(string $clientName, array $configuration): ConfiguratorInterface
+    public function create(string $clientName, array $configuration): ConfiguratorInterface
     {
         $config = $configuration['options'];
         $config['base_uri'] = $configuration['base_uri'];
-        $config['meta']['client_name'] = $clientName;
+        $config['meta']['name'] = $clientName;
 
         if (null !== $this->configProvider) {
             $config = array_replace_recursive($config, $this->configProvider->getConfig());

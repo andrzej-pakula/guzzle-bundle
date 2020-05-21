@@ -9,8 +9,7 @@ use Andreo\GuzzleBundle\Configurator\ConfigBuilder;
 use Andreo\GuzzleBundle\Configurator\Configurator;
 use Andreo\GuzzleBundle\Configurator\ConfigInterface;
 use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilder;
-use Andreo\GuzzleBundle\Configurator\ConfigurationFactory;
-use Andreo\GuzzleBundle\DataTransfer\DataMapperInterface;
+use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryInterface;
 use Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\Config\FileLocator;
@@ -42,14 +41,15 @@ class AndreoGuzzleExtension extends Extension
         foreach ($clients as $clientName => $clientConfig) {
             $configuratorDef = new Definition(Configurator::class);
             if (null === $clientConfig['config_provider_id']) {
-                $configuratorDef->setFactory(new Reference(ConfigurationFactory::class));
+                $configuratorDef->setFactory([new Reference(ConfiguratorFactoryInterface::class), 'create']);
             } else {
-                $configuratorFactory = (new Definition(ConfigurationFactory::class))
-                    ->setFactory([new Reference(ConfigurationFactory::class), 'withConfigProvider'])
+                $configuratorFactory = (new Definition(ConfiguratorFactoryInterface::class))
+                    ->setFactory([new Reference(ConfiguratorFactoryInterface::class), 'withConfigProvider'])
                     ->addArgument(new Reference($clientConfig['config_provider_id']));
 
-                $configuratorDef->setFactory($configuratorFactory);
+                $configuratorDef->setFactory([$configuratorFactory, 'create']);
             }
+
             $configuratorDef->setArguments([
                 $clientConfig['client_decorator_id'] ?? $clientName,
                 $clientConfig

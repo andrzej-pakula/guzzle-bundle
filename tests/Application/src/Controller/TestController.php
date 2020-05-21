@@ -18,6 +18,6 @@ class TestController extends AbstractController
      */
     public function test(FooClient $fooClient, DataMapperLocator $dataMapperLocator)
     {
-        dump($dataMapperLocator); die;
+        dump($fooClient); die;
     }
 }

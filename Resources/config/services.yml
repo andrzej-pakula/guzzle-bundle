@@ -13,6 +13,9 @@ services:
     arguments:
       - !tagged_iterator andreo.guzzle.middleware
 
+  Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryInterface:
+    alias: Andreo\GuzzleBundle\Configurator\ConfigurationFactory
+
 ### DataTransfer ###
 
   andreo.guzzle.normalizer.object:
