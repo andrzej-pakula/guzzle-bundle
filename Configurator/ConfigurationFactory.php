@@ -32,6 +32,7 @@ final class ConfigurationFactory
     {
         $config = $configuration['options'];
         $config['base_uri'] = $configuration['base_uri'];
+        $config['meta']['client_name'] = $clientName;
 
         if (null !== $this->configProvider) {
             $config = array_replace_recursive($config, $this->configProvider->getConfig());
