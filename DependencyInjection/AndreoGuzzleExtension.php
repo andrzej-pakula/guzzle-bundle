@@ -51,7 +51,7 @@ class AndreoGuzzleExtension extends Extension
             }
 
             $configuratorDef->setArguments([
-                $clientConfig['client_decorator_id'] ?? $clientName,
+                class_exists($clientConfig['client_decorator_id']) ? $clientConfig['client_decorator_id'] : $clientName,
                 $clientConfig
             ]);
 
