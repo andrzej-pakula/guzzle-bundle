@@ -7,7 +7,7 @@ namespace Andreo\GuzzleBundle\Middleware;
 
 use Andreo\GuzzleBundle\Request\Options;
 use Andreo\GuzzleBundle\DataTransfer\DataMapperLocator;
-use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
+use Andreo\GuzzleBundle\DataTransfer\DataTransferInterface;
 use Andreo\GuzzleBundle\DataTransfer\ResponseTransformer;
 use Andreo\GuzzleBundle\Response\Response;
 use GuzzleHttp\HandlerStack;
@@ -36,11 +36,11 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
 
         return $nextHandler($request, $options)->then(
             function (ResponseInterface $response) use ($request, $options) {
-                /** @var DTOInterface|null $dto */
+                /** @var DataTransferInterface|null $dto */
                 $dto = $options[Options::DTO] ??= null;
 
-                if ($dto instanceof DTOInterface) {
-                    $dataMapper = $this->dataMapperLocator->get($options[Options::DTO_SUPPORTS][Options::FORMAT]);
+                if ($dto instanceof DataTransferInterface) {
+                    $dataMapper = $this->dataMapperLocator->get($options[Options::DATA_TRANSFER][Options::FORMAT]);
                     $transformer = $dto->reverseTransfer(new ResponseTransformer(new Response($response), $dataMapper));
                     $response = $transformer->getResponse();
                 }
@@ -57,6 +57,6 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
 
     public function supports(string $clientName, array $options): bool
     {
-        return $options[Options::DTO_SUPPORTS]['enabled'];
+        return $options[Options::DATA_TRANSFER]['enabled'];
     }
 }

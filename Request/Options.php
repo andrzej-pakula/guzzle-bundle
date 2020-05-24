@@ -8,7 +8,7 @@ namespace Andreo\GuzzleBundle\Request;
 
 final class Options
 {
-    public const DTO_SUPPORTS = 'dto_supports';
+    public const DATA_TRANSFER = 'data_transfer';
     public const FORMAT = 'format';
     public const DTO = 'dto';
 }

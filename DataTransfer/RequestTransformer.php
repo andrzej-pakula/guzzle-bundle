@@ -21,14 +21,14 @@ final class RequestTransformer implements RequestTransformerInterface
         $this->dataMapper = $dataMapper;
     }
 
-    public function withBody(DTOInterface $data): RequestTransformerInterface
+    public function withBody(DataTransferInterface $data): RequestTransformerInterface
     {
         $stream = stream_for($this->dataMapper->serialize($data));
 
         return new self($this->request->withBody($stream), $this->dataMapper);
     }
 
-    public function withQuery(DTOInterface $data): RequestTransformerInterface
+    public function withQuery(DataTransferInterface $data): RequestTransformerInterface
     {
         $query = http_build_query($this->dataMapper->normalize($data));
         $uri = $this->request->getUri()->withQuery($query);

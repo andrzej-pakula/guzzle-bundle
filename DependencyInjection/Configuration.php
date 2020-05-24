@@ -41,7 +41,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('options')
                     ->addDefaultsIfNotSet()
                         ->children()
-                            ->arrayNode(Options::DTO_SUPPORTS)
+                            ->arrayNode(Options::DATA_TRANSFER)
                             ->canBeDisabled()
                                 ->children()
                                     ->scalarNode(Options::FORMAT)->defaultValue('json')->end()

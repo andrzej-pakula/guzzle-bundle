@@ -6,12 +6,12 @@ namespace Andreo\GuzzleBundle\DataTransfer;
 
 interface DataMapperInterface
 {
-    public function normalize(DTOInterface $data, array $options = []): array;
+    public function normalize(DataTransferInterface $data, array $options = []): array;
 
-    public function serialize(DTOInterface $data, array $options = []): string;
+    public function serialize(DataTransferInterface $data, array $options = []): string;
 
     /**
-     * @return DTOInterface|DTOInterface[]
+     * @return object|object[]
      */
     public function deserialize(string $content, string $type, array $options = []);
 }

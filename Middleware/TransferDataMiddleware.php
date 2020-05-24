@@ -7,7 +7,7 @@ namespace Andreo\GuzzleBundle\Middleware;
 
 use Andreo\GuzzleBundle\Request\Options;
 use Andreo\GuzzleBundle\DataTransfer\DataMapperLocator;
-use Andreo\GuzzleBundle\DataTransfer\DTOInterface;
+use Andreo\GuzzleBundle\DataTransfer\DataTransferInterface;
 use Andreo\GuzzleBundle\DataTransfer\RequestTransformer;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
@@ -33,11 +33,11 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface, Midd
     {
         $nextHandler = $this->getNextHandler();
 
-        /** @var DTOInterface|null $dto */
+        /** @var DataTransferInterface|null $dto */
         $dto = $options[Options::DTO] ??= null;
 
-        if ($dto instanceof DTOInterface) {
-            $dataMapper = $this->dataMapperLocator->get($options[Options::DTO_SUPPORTS][Options::FORMAT]);
+        if ($dto instanceof DataTransferInterface) {
+            $dataMapper = $this->dataMapperLocator->get($options[Options::DATA_TRANSFER][Options::FORMAT]);
             $transformer = $dto->transfer(new RequestTransformer($request, $dataMapper));
 
             $request = $transformer->getRequest()
@@ -55,6 +55,6 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface, Midd
 
     public function supports(string $clientName, array $options): bool
     {
-        return $options[Options::DTO_SUPPORTS]['enabled'];
+        return $options[Options::DATA_TRANSFER]['enabled'];
     }
 }

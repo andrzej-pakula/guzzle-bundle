@@ -22,12 +22,12 @@ final class DataMapper implements DataMapperInterface
         $this->format = $format;
     }
 
-    public function normalize(DTOInterface $data, array $options = []): array
+    public function normalize(DataTransferInterface $data, array $options = []): array
     {
         return $this->serializer->normalize($data, $this->format, $options);
     }
 
-    public function serialize(DTOInterface $data, array $options = []): string
+    public function serialize(DataTransferInterface $data, array $options = []): string
     {
         return $this->serializer->serialize($data, $this->format, $options);
     }
