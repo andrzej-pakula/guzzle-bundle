@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Client;
 
-use Andreo\GuzzleBundle\Response\RequestFactory;
 use Andreo\GuzzleBundle\Response\Response;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
