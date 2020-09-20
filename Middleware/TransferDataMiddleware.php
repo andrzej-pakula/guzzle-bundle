@@ -15,9 +15,9 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 
-final class TransferDataMiddleware implements InvokableMiddlewareInterface, MiddlewareSupportsInterface
+final class TransferDataMiddleware implements MiddlewareInterface, MiddlewareSupportsInterface
 {
-    use InvokableMiddlewareTrait;
+    use MiddlewareTrait;
 
     private DataMapperLocator $dataMapperLocator;
 
@@ -31,7 +31,7 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface, Midd
      */
     public function __invoke(RequestInterface $request, array $options): PromiseInterface
     {
-        $nextHandler = $this->getNextHandler();
+        $nextHandler = $this->getNext();
 
         /** @var DataTransferInterface|null $dto */
         $dto = $options[Options::DTO] ??= null;
@@ -50,7 +50,7 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface, Midd
 
     public function join(HandlerStack $stack): void
     {
-        $stack->before('prepare_body', new InvokableMiddlewareHandler($this), self::class);
+        $stack->before('prepare_body', new MiddlewareHandler($this), self::class);
     }
 
     public function supports(string $clientName, array $options): bool

@@ -16,9 +16,9 @@ use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterface, MiddlewareSupportsInterface
+final class ReverseTransferDataMiddleware implements MiddlewareInterface, MiddlewareSupportsInterface
 {
-    use InvokableMiddlewareTrait;
+    use MiddlewareTrait;
 
     private DataMapperLocator $dataMapperLocator;
 
@@ -32,7 +32,7 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
      */
     public function __invoke(RequestInterface $request, array $options): PromiseInterface
     {
-        $nextHandler = $this->getNextHandler();
+        $nextHandler = $this->next;
 
         return $nextHandler($request, $options)->then(
             function (ResponseInterface $response) use ($request, $options) {
@@ -52,7 +52,7 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
 
     public function join(HandlerStack $stack): void
     {
-        $stack->unshift(new InvokableMiddlewareHandler($this), self::class);
+        $stack->unshift(new MiddlewareHandler($this), self::class);
     }
 
     public function supports(string $clientName, array $options): bool
