@@ -8,7 +8,7 @@ namespace Andreo\GuzzleBundle\Configurator;
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
 use GuzzleHttp\HandlerStack;
 
-final class Configurator implements ConfiguratorInterface
+final class Configurator implements ConfiguratorInterface, ConfigProviderInterface
 {
     private HandlerStack $handlerStack;
 
@@ -32,7 +32,7 @@ final class Configurator implements ConfiguratorInterface
 
     public function addMiddleware(MiddlewareInterface $middleware): void
     {
-        $middleware->apply($this->handlerStack);
+        $middleware->join($this->handlerStack);
     }
 
     /**

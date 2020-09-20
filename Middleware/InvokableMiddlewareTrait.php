@@ -19,6 +19,9 @@ trait InvokableMiddlewareTrait
         return $new;
     }
 
+    /**
+     * @return callable
+     */
     public function getNextHandler(): callable
     {
         return $this->nextHandler;

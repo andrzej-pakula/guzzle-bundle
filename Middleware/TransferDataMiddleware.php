@@ -48,7 +48,7 @@ final class TransferDataMiddleware implements InvokableMiddlewareInterface, Midd
         return $nextHandler($request, $options);
     }
 
-    public function apply(HandlerStack $stack): void
+    public function join(HandlerStack $stack): void
     {
         $stack->before('prepare_body', new InvokableMiddlewareHandler($this), self::class);
     }

@@ -8,5 +8,5 @@ use GuzzleHttp\HandlerStack;
 
 interface MiddlewareInterface
 {
-    public function apply(HandlerStack $stack): void;
+    public function join(HandlerStack $stack): void;
 }

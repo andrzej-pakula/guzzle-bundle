@@ -50,7 +50,7 @@ final class ReverseTransferDataMiddleware implements InvokableMiddlewareInterfac
         );
     }
 
-    public function apply(HandlerStack $stack): void
+    public function join(HandlerStack $stack): void
     {
         $stack->unshift(new InvokableMiddlewareHandler($this), self::class);
     }

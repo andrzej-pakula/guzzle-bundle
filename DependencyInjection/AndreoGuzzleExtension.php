@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\DependencyInjection;
 
 use Andreo\GuzzleBundle\Client\ClientFactoryInterface;
-use Andreo\GuzzleBundle\Configurator\ConfigBuilder;
 use Andreo\GuzzleBundle\Configurator\Configurator;
-use Andreo\GuzzleBundle\Configurator\ConfigInterface;
-use Andreo\GuzzleBundle\Configurator\DelegatingConfigBuilder;
 use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryInterface;
-use Andreo\GuzzleBundle\Middleware\MiddlewareRegistryInterface;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,7 +15,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Andreo\GuzzleBundle\Middleware\MiddlewareInterface;
-use Andreo\GuzzleBundle\Configurator\ConfiguratorFactoryFactory;
 
 
 class AndreoGuzzleExtension extends Extension

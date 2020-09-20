@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\DependencyInjection;
 
 
-use Andreo\GuzzleBundle\Client\ClientInterface;
+use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
