@@ -31,7 +31,7 @@ final class TransferDataMiddleware implements MiddlewareInterface, MiddlewareSup
      */
     public function __invoke(RequestInterface $request, array $options): PromiseInterface
     {
-        $nextHandler = $this->getNext();
+        $nextHandler = $this->next;
 
         /** @var DataTransferInterface|null $dto */
         $dto = $options[Options::DTO] ??= null;
