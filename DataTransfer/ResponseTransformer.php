@@ -36,7 +36,7 @@ final class ResponseTransformer implements ResponseTransformerInterface
         if (null !== $objectToPopulate) {
             $options[AbstractNormalizer::OBJECT_TO_POPULATE] = $objectToPopulate;
         }
-        
+
         $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), $type, $options);
 
         return new self($this->response->withDTO($dto), $this->dataMapper);
