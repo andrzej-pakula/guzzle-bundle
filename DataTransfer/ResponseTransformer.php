@@ -7,6 +7,7 @@ namespace Andreo\GuzzleBundle\DataTransfer;
 
 use Andreo\GuzzleBundle\Response\Response;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 final class ResponseTransformer implements ResponseTransformerInterface
 {
@@ -29,9 +30,14 @@ final class ResponseTransformer implements ResponseTransformerInterface
     /**
      * @return Response&ResponseInterface
      */
-    public function withDTO(string $type): ResponseTransformerInterface
+    public function withDTO(string $type, ?DataTransferInterface $objectToPopulate = null): ResponseTransformerInterface
     {
-        $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), $type);
+        $options = [];
+        if (null !== $objectToPopulate) {
+            $options[AbstractNormalizer::OBJECT_TO_POPULATE] = $objectToPopulate;
+        }
+        
+        $dto = $this->dataMapper->deserialize($this->response->getBody()->getContents(), $type, $options);
 
         return new self($this->response->withDTO($dto), $this->dataMapper);
     }

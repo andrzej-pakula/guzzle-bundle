@@ -16,7 +16,7 @@ use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class ReverseTransferDataMiddleware implements MiddlewareInterface, MiddlewareSupportsInterface
+final class ResponseTransferDataMiddleware implements MiddlewareInterface, MiddlewareSupportsInterface
 {
     use MiddlewareTrait;
 

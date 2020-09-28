@@ -15,7 +15,7 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 
-final class TransferDataMiddleware implements MiddlewareInterface, MiddlewareSupportsInterface
+final class RequestTransferDataMiddleware implements MiddlewareInterface, MiddlewareSupportsInterface
 {
     use MiddlewareTrait;
 
