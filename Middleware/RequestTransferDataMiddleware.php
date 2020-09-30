@@ -34,7 +34,7 @@ final class RequestTransferDataMiddleware implements MiddlewareInterface, Middle
         $nextHandler = $this->next;
 
         /** @var DataTransferInterface|null $dto */
-        $dto = $options[Options::DTO] ??= null;
+        $dto = $options[Options::DATA] ??= null;
 
         if ($dto instanceof DataTransferInterface) {
             $dataMapper = $this->dataMapperLocator->get($options[Options::DATA_TRANSFER][Options::FORMAT]);

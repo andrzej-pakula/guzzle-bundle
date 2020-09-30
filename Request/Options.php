@@ -10,5 +10,5 @@ final class Options
 {
     public const DATA_TRANSFER = 'data_transfer';
     public const FORMAT = 'format';
-    public const DTO = 'dto';
+    public const DATA = 'data';
 }
