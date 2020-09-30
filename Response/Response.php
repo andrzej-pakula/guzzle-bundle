@@ -25,4 +25,9 @@ final class Response implements ResponseInterface
 
         return $new;
     }
+
+    public function getView()
+    {
+        return $this->view;
+    }
 }
