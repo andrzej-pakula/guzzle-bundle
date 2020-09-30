@@ -21,26 +21,41 @@ trait ClientDecoratorTrait
         $this->decorated = $decorated;
     }
 
+    /**
+     * @return Response&ResponseInterface
+     */
     public function get(string $url, array $options = []): ResponseInterface
     {
         return $this->request(Methods::METHOD_GET, $url, $options);
     }
 
+    /**
+     * @return Response&ResponseInterface
+     */
     public function post(string $url, array $options = []): ResponseInterface
     {
         return $this->request(Methods::METHOD_POST, $url, $options);
     }
 
+    /**
+     * @return Response&ResponseInterface
+     */
     public function put(string $url, array $options = []): ResponseInterface
     {
         return $this->request(Methods::METHOD_PUT, $url, $options);
     }
 
+    /**
+     * @return Response&ResponseInterface
+     */
     public function path(string $url, array $options = []): ResponseInterface
     {
         return $this->request(Methods::METHOD_PATCH, $url, $options);
     }
 
+    /**
+     * @return Response&ResponseInterface
+     */
     public function delete(string $url, array $options = []): ResponseInterface
     {
         return $this->request(Methods::METHOD_DELETE, $url, $options);
