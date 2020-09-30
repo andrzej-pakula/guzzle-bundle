@@ -41,7 +41,7 @@ final class RequestTransferDataMiddleware implements MiddlewareInterface, Middle
             $transformer = $dto->transfer(new RequestTransformer($request, $dataMapper));
 
             $request = $transformer->getRequest()
-                ->withHeader('Content-Type', 'application/json')
+                ->withHeader('Content-ObjectType', 'application/json')
                 ->withHeader('Accept', 'application/json');
         }
 

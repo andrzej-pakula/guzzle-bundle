@@ -4,44 +4,25 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\Response;
 
-use Andreo\GuzzleBundle\DataTransfer\DataTransferInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class Response implements ResponseInterface
 {
     use ResponseDecoratorTrait;
 
-    private ?object $dto;
-
-    /** @var DataTransferInterface[]  */
-    private ?array $dtos;
-
-    public function withDTO(object $dto): ResponseInterface
-    {
-        $new = clone $this;
-        $new->dto = $dto;
-
-        return $new;
-    }
-
-    public function withDTOs(array $dtos): ResponseInterface
-    {
-        $new = clone $this;
-        $new->dtos = $dtos;
-
-        return $new;
-    }
-
-    public function getDTO(): ?object
-    {
-        return $this->dto;
-    }
+    /**
+     * @var mixed
+     */
+    private $view;
 
     /**
-     * @return object[]
+     * @param mixed $view
      */
-    public function getDTOs(): ?array
+    public function withView($view): ResponseInterface
     {
-        return $this->dtos;
+        $new = clone $this;
+        $new->view = $view;
+
+        return $new;
     }
 }

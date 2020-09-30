@@ -25,7 +25,10 @@ final class RequestTransformer implements RequestTransformerInterface
     {
         $stream = stream_for($this->dataMapper->serialize($data));
 
-        return new self($this->request->withBody($stream), $this->dataMapper);
+        $new = clone $this;
+        $new->request = $this->request->withBody($stream);
+
+        return $new;
     }
 
     public function withQuery(DataTransferInterface $data): RequestTransformerInterface
@@ -33,7 +36,10 @@ final class RequestTransformer implements RequestTransformerInterface
         $query = http_build_query($this->dataMapper->normalize($data));
         $uri = $this->request->getUri()->withQuery($query);
 
-        return new self($this->request->withUri($uri), $this->dataMapper);
+        $new = clone $this;
+        $new->request = $this->request->withUri($uri);
+
+        return $new;
     }
 
     public function getRequest(): RequestInterface
