@@ -13,21 +13,21 @@ final class Response implements ResponseInterface
     /**
      * @var mixed
      */
-    private $view;
+    private $data;
 
     /**
-     * @param mixed $view
+     * @param mixed $data
      */
-    public function withView($view): ResponseInterface
+    public function withData($data): ResponseInterface
     {
         $new = clone $this;
-        $new->view = $view;
+        $new->data = $data;
 
         return $new;
     }
 
-    public function getView()
+    public function getData()
     {
-        return $this->view;
+        return $this->data;
     }
 }

@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Andreo\GuzzleBundle\DataTransfer\Type;
 
 
-final class ObjectType
+final class DataType
 {
     private const COLLECTION_TYPE = 'collection';
     private const SINGLE_TYPE = 'single';
