@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Andreo\GuzzleBundle\DependencyInjection;
 
-use Andreo\OAuthApiConnectorBundle\Security\ApiConnector;
 use GuzzleHttp\RequestOptions;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -35,7 +34,7 @@ final class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('base_uri')->defaultNull()->end()
-                    ->scalarNode('client_decorator_id')->defaultNull()->end()
+                    ->scalarNode('decorator_id')->defaultNull()->end()
                     ->scalarNode('lazy')->defaultFalse()->end()
                     ->scalarNode('config_provider_id')->defaultNull()->end()
                     ->arrayNode('options')
@@ -44,7 +43,10 @@ final class Configuration implements ConfigurationInterface
                             ->arrayNode(Options::DATA_TRANSFER)
                             ->canBeDisabled()
                                 ->children()
-                                    ->scalarNode(Options::FORMAT)->defaultValue('json')->end()
+                                    ->enumNode(Options::FORMAT)
+                                        ->values(['json', 'xml'])
+                                        ->defaultValue('json')
+                                    ->end()
                                 ->end()
                             ->end()
                             ->scalarNode(RequestOptions::TIMEOUT)->defaultNull()->end()

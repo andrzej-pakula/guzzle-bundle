@@ -38,13 +38,13 @@ final class ConfigurationFactory implements ConfiguratorFactoryInterface
             $config = array_replace_recursive($config, $this->configProvider->getConfig());
         }
 
-        return new Configurator($config, $this->getSupportedMiddlewares($clientName, $config));
+        return new Configurator($config, $this->getMiddlewares($clientName, $config));
     }
 
     /**
      * @return Generator<MiddlewareInterface>
      */
-    private function getSupportedMiddlewares(string $clientName, array $config): Generator
+    private function getMiddlewares(string $clientName, array $config): Generator
     {
         /** @var MiddlewareInterface $middleware */
         foreach ($this->middlewares as $middleware) {
