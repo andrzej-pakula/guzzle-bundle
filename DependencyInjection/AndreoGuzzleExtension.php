@@ -46,7 +46,7 @@ class AndreoGuzzleExtension extends Extension
             }
 
             $configuratorDef->setArguments([
-                class_exists($clientConfig['client_decorator_id']) ? $clientConfig['client_decorator_id'] : $clientName,
+                class_exists($clientConfig['decorator_id']) ? $clientConfig['decorator_id'] : $clientName,
                 $clientConfig
             ]);
 
@@ -56,9 +56,9 @@ class AndreoGuzzleExtension extends Extension
                 ->setFactory([new Reference(ClientFactoryInterface::class), 'create'])
                 ->addArgument($configuratorDef);
 
-            if (null !== $clientConfig['client_decorator_id']) {
+            if (null !== $clientConfig['decorator_id']) {
                 $clientDef->addTag('andreo.guzzle_decorated_client', [
-                    'decorator_id' => $clientConfig['client_decorator_id']
+                    'decorator_id' => $clientConfig['decorator_id']
                 ]);
             }
 
