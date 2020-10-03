@@ -53,13 +53,13 @@ services:
 
 ### Middleware ###
 
-  Andreo\GuzzleBundle\Middleware\TransferDataMiddleware:
+  Andreo\GuzzleBundle\Middleware\RequestTransferDataMiddleware:
     tags: [andreo.guzzle.middleware]
     lazy: true
     arguments:
       - '@Andreo\GuzzleBundle\DataTransfer\DataMapperLocator'
 
-  Andreo\GuzzleBundle\Middleware\ReverseTransferDataMiddleware:
+  Andreo\GuzzleBundle\Middleware\ResponseTransferDataMiddleware:
     tags: [andreo.guzzle.middleware]
     lazy: true
     arguments:
