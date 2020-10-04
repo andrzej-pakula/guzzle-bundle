@@ -32,7 +32,7 @@ final class ConfigurationFactory implements ConfiguratorFactoryInterface
     {
         $config = $configuration['options'];
         $config['base_uri'] = $configuration['base_uri'];
-        $config['meta']['name'] = $clientName;
+        $config['name'] = $clientName;
 
         if (null !== $this->configProvider) {
             $config = array_replace_recursive($config, $this->configProvider->getConfig());
