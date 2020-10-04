@@ -45,8 +45,9 @@ class AndreoGuzzleExtension extends Extension
                 $configuratorDef->setFactory([$configuratorFactory, 'create']);
             }
 
+            $decoratorId = $clientConfig['decorator_id'];
             $configuratorDef->setArguments([
-                class_exists($clientConfig['decorator_id']) ? $clientConfig['decorator_id'] : $clientName,
+                (null !== $decoratorId && class_exists($decoratorId)) ? $decoratorId : $clientName,
                 $clientConfig
             ]);
 
