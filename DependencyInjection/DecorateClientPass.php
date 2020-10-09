@@ -40,7 +40,7 @@ class DecorateClientPass implements CompilerPassInterface
                 }
 
                 $clientDecoratorDef
-                    ->setPrivate(true)
+                    ->setPublic(false)
                     ->setLazy($clientDef->isLazy())
                     ->setDecoratedService($clientId, $attributes['decorator_id'] . '.inner')
                     ->setArguments([

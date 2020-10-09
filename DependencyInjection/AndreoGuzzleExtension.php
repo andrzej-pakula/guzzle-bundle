@@ -52,7 +52,7 @@ class AndreoGuzzleExtension extends Extension
             ]);
 
             $clientDef = (new Definition(ClientInterface::class))
-                ->setPrivate(true)
+                ->setPublic(false)
                 ->setLazy($clientConfig['lazy'])
                 ->setFactory([new Reference(ClientFactoryInterface::class), 'create'])
                 ->addArgument($configuratorDef);
